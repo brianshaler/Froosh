@@ -9,6 +9,7 @@
   <p>Address: <input type="text" name="restaurant[address]", value="<%= restaurant.address %>" /></p>
   <p>Latitude: <input type="text" name="restaurant[loc][lat]", value="<%= restaurant.loc.lat %>" /></p>
   <p>Longitude: <input type="text" name="restaurant[loc][lng]", value="<%= restaurant.loc.lng %>" /></p>
+  <p>Setup: <input type="text" name="restaurant[setup]", value="<%= restaurant.setup %>" /></p>
   <p>
   	<button class="button-submit" type="submit" value="Update">Save</button>
   	<a class="button-cancel" href="/restaurant/show/<%= restaurant.id %>">Cancel</a>
