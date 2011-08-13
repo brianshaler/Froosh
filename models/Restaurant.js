@@ -17,7 +17,7 @@ var Restaurant = new Schema({
     loc: {
         lat: Number,
         lng: Number},
-    setup: {type: Boolean}
+    setup: {type: Boolean, default: false}
     
 });
 
