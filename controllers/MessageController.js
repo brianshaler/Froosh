@@ -25,13 +25,14 @@ module.exports = {
             latest_deal = req.query["latest_deal"];
         } catch (e) { }
         
+        var twiml_start = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>';
+        var twiml_end = '</Sms>\n</Response>';
+        
         Restaurant.find({phone: from}).each(function (restaurant) {
             resaurant.latest_deal = latest_deal;
             resaurant.save();
+            res.send(twiml_start + restaurant.latest_deal + twiml_end, {'Content-Type':'text/xml'}, 200);
         });
-		
-        var twiml = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>Thanks for your text, '+from+', we\'ll be in touch.</Sms>\n</Response>';
-        res.send(twiml, {'Content-Type':'text/xml'}, 200);
     },
     
 	/**
