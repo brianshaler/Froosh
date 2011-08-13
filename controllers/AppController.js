@@ -19,7 +19,7 @@ module.exports = function(app) {
 	app.get("/:controller/:action/:id.:format?", router);  	// To support controller/index	
 	app.get("/:controller/:action/:id", router);		// Show edit
 	app.post("/:controller/:action", router);			// Create
-	app.put("/:controller/:action/:id", router);				// Update
+	app.put("/:controller/:id", router);				// Update
 	app.del("/:controller/:id", router);				// Delete
 		
 	app.get("/:controller/:action", router);		// Action?

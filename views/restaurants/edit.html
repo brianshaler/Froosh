@@ -1,7 +1,7 @@
 
 <h1>Editing Restaurant <%= restaurant.name %></h1>
 <%- partial('../messages') %>
-<form method="post" action="/restaurant/<%= restaurant.id %>">
+<form method="post" action="/restaurant/edit/<%= restaurant.id %>">
   <input type="hidden" name="_method" value="put" />
   <p>Name: <input type="text" name="restaurant[name]", value="<%= restaurant.name %>" /></p>
   <p>Phone: <input type="text" name="restaurant[phone]", value="<%= restaurant.phone %>" /></p>
@@ -11,6 +11,6 @@
   <p>Longitude: <input type="text" name="restaurant[longitude]", value="<%= restaurant.longitude %>" /></p>
   <p>
   	<button class="button-submit" type="submit" value="Update">Save</button>
-  	<a class="button-cancel" href="/restaurant/<%= restaurant.id %>">Cancel</a>
+  	<a class="button-cancel" href="/restaurant/show/<%= restaurant.id %>">Cancel</a>
   </p>
 </form>
