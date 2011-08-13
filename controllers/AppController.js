@@ -6,20 +6,22 @@ module.exports = function(app) {
 	// app.get("/favicon.ico", function() {}); // Required if you delete the favicon.ico from public
 	
 	// Plural
-	app.get("/:controller?", router);				        // Index
 	app.get("/:controller.:format?", router);				// Index
 	app.get("/:controller/:from-:to.:format?", router);		// Index
+	app.get("/:controller", router);				        // Index
+	app.get("/", router);				        // Index
 	
 	// Plural Create & Delete
 	app.post("/:controller", router);			// Create
 	app.del("/:controller", router);   			// Delete all
 	
 	// Singular - different variable to clarify routing
-	app.get("/:controller/:id.:format?", router);  	// To support controller/index	
-	app.get("/:controller/:id/:action", router);		// Show edit
-	app.put("/:controller/:id", router);				// Update
-	app.del("/:controller/:id", router);				// Delete	
-	
+	app.get("/:controller/:action/:id.:format?", router);  	// To support controller/index	
+	app.get("/:controller/:action/:id", router);		// Show edit
+	app.put("/:controller/:action/:id", router);				// Update
+	app.del("/:controller/:action/:id", router);				// Delete
+		
+	app.get("/:controller/:action", router);		// Action?
 }
 
 ///
@@ -43,7 +45,11 @@ function router(req, res, next) {
 		// We are plural
 		switch(method) {
 			case 'get':
-				fn = 'index';
+				if(action.length > 0) {
+					fn = action;
+				} else {
+					fn = 'index';
+				}
 				break;
 			case 'post':
 				fn = 'create';
@@ -56,14 +62,14 @@ function router(req, res, next) {
 	} else {
 		
 		// Controller name is now singular, need to switch it back 
-		controller = controller.pluralize();
+		//controller = controller.pluralize();
 		
 		switch(method) {
 			case 'get':
 				if(action.length > 0) {
 					fn = action;
 				} else {
-					fn = 'show';
+					fn = 'index';
 				}
 				break;
 			case 'put':
@@ -75,9 +81,19 @@ function router(req, res, next) {
 		}		
 		
 	}
-			
-	var controllerLibrary = require('./' + controller.capitalize() + 'Controller');			
-	if(typeof controllerLibrary[fn] === 'function') {
+	
+	controllerLibrary = null;
+	try {
+		var controllerLibrary = require('./' + controller.capitalize() + 'Controller');			
+	} catch (e) {  }
+	// Just in case it's plural...
+	if (!controllerLibrary && controller.charAt(controller.length-1) == "s") {
+		try {
+			var controllerLibrary = require('./' + controller.capitalize().substring(0, controller.length-1) + 'Controller');			
+		} catch (e) {  }
+	}
+	
+	if(controllerLibrary && typeof controllerLibrary[fn] === 'function') {
 		controllerLibrary[fn](req,res,next);		
 	} else {
 		res.render('404');
@@ -93,7 +109,6 @@ function router(req, res, next) {
  * @param res
  */
 function index(req, res, next) {
-		 
 	/**
 	 * If you want to redirect to another controller, uncomment
 	 */
