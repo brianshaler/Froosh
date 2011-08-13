@@ -6,10 +6,19 @@
  var mongoose = require('mongoose'),	
 	Message = mongoose.model('Message'),
 	pager = require('../utils/pager.js'),
-	ViewTemplatePath = 'messages';
+	ViewTemplatePath = 'messages',
+	TwilioClient = require('twilio').Client,
+    Twiml = require('twilio').Twiml;
 
 module.exports = {
 
+    incoming: function(req, res, next) {
+        var message = req.body.Body;
+        var from = req.body.From;
+        var twiml = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>Thanks for your text, '+from+', we\'ll be in touch.</Sms>\n</Response>';
+        res.send(twiml, {'Content-Type':'text/xml'}, 200);
+    },
+    
 	/**
 	 * Index action, returns a list either via the views/messages/index.html view or via json
 	 * Default mapping to GET '/messages'
