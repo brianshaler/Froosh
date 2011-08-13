@@ -20,20 +20,26 @@ module.exports = {
             from = req.body.From;
             latest_deal = req.body.Body;
         } catch (e) { }
-        try {
-            from = req.query["from"];
-            latest_deal = req.query["latest_deal"];
-        } catch (e) { }
+        if (from == "") {
+            try {
+                from = req.query["from"];
+                latest_deal = req.query["latest_deal"];
+            } catch (e) { }
+        }
         
         var twiml_start = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>';
         var twiml_end = '</Sms>\n</Response>';
         
         Restaurant.find({phone: from}, function (err, restaurants) {
-            restaurants.forEach(function (restaurant) {
-                restaurant.latest_deal = latest_deal;
-                restaurant.save();
-                res.send(twiml_start + restaurant.latest_deal + twiml_end, {'Content-Type':'text/xml'}, 200);
-            });
+            if (restaurants.length > 0) {
+                restaurants.forEach(function (restaurant) {
+                    restaurant.latest_deal = latest_deal;
+                    restaurant.save();
+                    res.send(twiml_start + restaurant.latest_deal + twiml_end, {'Content-Type':'text/xml'}, 200);
+                });
+            } else {
+                res.send(twiml_start + "I don't recognize this number... ("+from+")" + twiml_end, {'Content-Type':'text/xml'}, 200);
+            }
         });
     },
     
