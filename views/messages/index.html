@@ -1,0 +1,31 @@
+
+<h1>messages</h1>
+<%- partial('../messages') %>
+<div style="float: left; width: 60%;">
+	<table class="tabular">
+		<tr>
+			<th>Name</th>
+		</tr>
+		<% messages.forEach(function(message){ %>
+		<tr>
+			<td><a href="/message/<%= message.id %>"><%= message.name %></a></td>
+		</tr>
+		<% }) %>
+		<tfoot>
+			<tr>
+				<td colspan='2'><%- pagerHtml %></td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<div style="float: left; margin-left: 5%; width: 35%;">
+	<form method="post" action="/messages">
+		<input type="hidden" name="_method" value="post" />
+		<p>
+			Name: <input type="text" name="message[name]" />
+		</p>
+		<p>
+			<button class="button-submit" type="submit" value="Create">Create</button>
+		</p>
+	</form>
+</div>
