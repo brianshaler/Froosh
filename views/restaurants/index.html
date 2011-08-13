@@ -1,0 +1,31 @@
+
+<h1>restaurants</h1>
+<%- partial('../messages') %>
+<div style="float: left; width: 60%;">
+	<table class="tabular">
+		<tr>
+			<th>Name</th>
+		</tr>
+		<% restaurants.forEach(function(restaurant){ %>
+		<tr>
+			<td><a href="/restaurant/<%= restaurant.id %>"><%= restaurant.name %></a></td>
+		</tr>
+		<% }) %>
+		<tfoot>
+			<tr>
+				<td colspan='2'><%- pagerHtml %></td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<div style="float: left; margin-left: 5%; width: 35%;">
+	<form method="post" action="/restaurants">
+		<input type="hidden" name="_method" value="post" />
+		<p>
+			Name: <input type="text" name="restaurant[name]" />
+		</p>
+		<p>
+			<button class="button-submit" type="submit" value="Create">Create</button>
+		</p>
+	</form>
+</div>
