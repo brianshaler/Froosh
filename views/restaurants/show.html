@@ -61,7 +61,7 @@
   		<th>Longitude</th><td><%= restaurant.longitude %></td>
   	</tr> 	
 </table>
-<a class="button-edit" href="<%= restaurant.id %>/edit" title="Edit restaurant ...">
+<a class="button-edit" href="/restaurant/edit/<%= restaurant.id %>" title="Edit restaurant ...">
 	Edit 
 </a>
 <button class="button-delete" id="<%= restaurant.id %>"  title="Delete restaurant ...">

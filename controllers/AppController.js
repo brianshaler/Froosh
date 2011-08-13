@@ -20,7 +20,7 @@ module.exports = function(app) {
 	app.get("/:controller/:action/:id", router);		// Show edit
 	app.post("/:controller/:action", router);			// Create
 	app.put("/:controller/:action/:id", router);				// Update
-	app.del("/:controller/:action/:id", router);				// Delete
+	app.del("/:controller/:id", router);				// Delete
 		
 	app.get("/:controller/:action", router);		// Action?
 }
