@@ -13,7 +13,6 @@
 module.exports = {
 
     incoming: function(req, res, next) {
-        var message = req.body.Body;
         var from = "";
         try {
             from = req.body.From;

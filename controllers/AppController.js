@@ -56,7 +56,7 @@ function router(req, res, next) {
 				if(action.length > 0) {
 					fn = action;
 				} else {
-					fn = 'index';
+					fn = 'create';
 				}
 				break;
 			case 'delete':
