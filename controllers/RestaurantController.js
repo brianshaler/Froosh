@@ -98,8 +98,8 @@ module.exports = {
 	    	restaurant.phone = req.body.restaurant.phone;
 	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
 	    	restaurant.address = req.body.restaurant.address;
-	    	restaurant.latitude = req.body.restaurant.latitude;
-	    	restaurant.longitude = req.body.restaurant.longitude;
+	    	restaurant.location.lat = req.body.restaurant.location.lat;
+	    	restaurant.location.lon = req.body.restaurant.location.lon;
 	    	
 	        restaurant.save(function(err) {
 	        
