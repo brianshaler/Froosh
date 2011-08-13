@@ -5,6 +5,7 @@
  **/
  var mongoose = require('mongoose'),	
 	Message = mongoose.model('Message'),
+	Restaurant = mongoose.model('Restaurant'),
 	pager = require('../utils/pager.js'),
 	ViewTemplatePath = 'messages',
 	TwilioClient = require('twilio').Client,
@@ -14,12 +15,21 @@ module.exports = {
 
     incoming: function(req, res, next) {
         var from = "";
+        var latest_deal = "";
         try {
             from = req.body.From;
+            latest_deal = req.body.Body;
         } catch (e) { }
-        if (req.query && req.query["from"]) {
+        try {
             from = req.query["from"];
-        }
+            latest_deal = req.query["latest_deal"];
+        } catch (e) { }
+        
+        Restaurant.find({phone: from}).each(function (restaurant) {
+            resaurant.latest_deal = latest_deal;
+            resaurant.save();
+        });
+		
         var twiml = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>Thanks for your text, '+from+', we\'ll be in touch.</Sms>\n</Response>';
         res.send(twiml, {'Content-Type':'text/xml'}, 200);
     },

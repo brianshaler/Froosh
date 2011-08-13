@@ -12,6 +12,7 @@ var Restaurant = new Schema({
     // Single default property
     name:{type: String, required: true},
     phone: {type:String},
+    latest_deal: {type:String},
     address: {type:String},
     latitude: {type:Number},
     longitude: {type:Number}
