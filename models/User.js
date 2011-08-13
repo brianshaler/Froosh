@@ -9,9 +9,11 @@ var mongoose = require('mongoose'),
 
 var User = new Schema({
 
-	  // Single default property
-	  name:{type: String, required: true}
-	  
+    // Single default property
+    name:{type: String, required: true},
+    password: {type:String},
+    zip: {type: String}
+    
 });
 
 mongoose.model('User', User);

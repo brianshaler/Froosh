@@ -9,9 +9,13 @@ var mongoose = require('mongoose'),
 
 var Restaurant = new Schema({
 
-	  // Single default property
-	  name:{type: String, required: true}
-	  
+    // Single default property
+    name:{type: String, required: true},
+    phone: {type:String},
+    address: {type:String},
+    latitude: {type:Number},
+    longitude: {type:Number}
+    
 });
 
 mongoose.model('Restaurant', Restaurant);
