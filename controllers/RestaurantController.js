@@ -95,6 +95,11 @@ module.exports = {
 	    	if (!restaurant) return next(err);
 	        
 	    	restaurant.name = req.body.restaurant.name;
+	    	restaurant.phone = req.body.restaurant.phone;
+	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
+	    	restaurant.address = req.body.restaurant.address;
+	    	restaurant.latitude = req.body.restaurant.latitude;
+	    	restaurant.longitude = req.body.restaurant.longitude;
 	    	
 	        restaurant.save(function(err) {
 	        
