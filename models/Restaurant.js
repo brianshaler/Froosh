@@ -14,7 +14,9 @@ var Restaurant = new Schema({
     phone: {type:String},
     latest_deal: {type:String},
     address: {type:String},
-    location: {type: Object},
+    loc: {
+        lat: Number,
+        lng: Number},
     setup: {type: Boolean}
     
 });
