@@ -18,7 +18,7 @@ module.exports = {
         try {
             from = req.body.From;
         } catch (e) { }
-        if (req.query["from"]) {
+        if (req.query && req.query["from"]) {
             from = req.query["from"];
         }
         var twiml = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>Thanks for your text, '+from+', we\'ll be in touch.</Sms>\n</Response>';
