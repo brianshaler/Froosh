@@ -27,6 +27,10 @@ module.exports = {
             } catch (e) { }
         }
         
+        if (from.length > 2 && from.substring(0, 2) == "+1") {
+            from = from.substring(2);
+        }
+        
         var twiml_start = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>';
         var twiml_end = '</Sms>\n</Response>';
         
