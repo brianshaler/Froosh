@@ -14,7 +14,13 @@ module.exports = {
 
     incoming: function(req, res, next) {
         var message = req.body.Body;
-        var from = req.body.From;
+        var from = "";
+        try {
+            from = req.body.From;
+        } catch (e) { }
+        if (req.query["from"]) {
+            from = req.query["from"];
+        }
         var twiml = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>Thanks for your text, '+from+', we\'ll be in touch.</Sms>\n</Response>';
         res.send(twiml, {'Content-Type':'text/xml'}, 200);
     },
