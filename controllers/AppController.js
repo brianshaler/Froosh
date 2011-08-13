@@ -18,6 +18,7 @@ module.exports = function(app) {
 	// Singular - different variable to clarify routing
 	app.get("/:controller/:action/:id.:format?", router);  	// To support controller/index	
 	app.get("/:controller/:action/:id", router);		// Show edit
+	app.post("/:controller/:action", router);			// Create
 	app.put("/:controller/:action/:id", router);				// Update
 	app.del("/:controller/:action/:id", router);				// Delete
 		
@@ -52,7 +53,11 @@ function router(req, res, next) {
 				}
 				break;
 			case 'post':
-				fn = 'create';
+				if(action.length > 0) {
+					fn = action;
+				} else {
+					fn = 'index';
+				}
 				break;
 			case 'delete':
 				fn = 'destroyAll';
