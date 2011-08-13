@@ -29,8 +29,8 @@ module.exports = {
         var twiml_end = '</Sms>\n</Response>';
         
         Restaurant.find({phone: from}).each(function (restaurant) {
-            resaurant.latest_deal = latest_deal;
-            resaurant.save();
+            restaurant.latest_deal = latest_deal;
+            restaurant.save();
             res.send(twiml_start + restaurant.latest_deal + twiml_end, {'Content-Type':'text/xml'}, 200);
         });
     },
