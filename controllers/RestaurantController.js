@@ -111,7 +111,7 @@ module.exports = {
 	              break;
 	            default:
 	              req.flash('info', 'Restaurant updated');
-	              res.redirect('/restaurant/' + req.params.id);
+	              res.redirect('/restaurant/show/' + req.params.id);
 	          }
 	        });
 	      });
@@ -140,7 +140,7 @@ module.exports = {
 	
 		      default:
 		    	  req.flash('info','Restaurant created');
-		      	  res.redirect('/restaurant/' + restaurant.id);
+		      	  res.redirect('/restaurant/show/' + restaurant.id);
 			 }
 		  });	  
 		  
