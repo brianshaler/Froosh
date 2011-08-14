@@ -299,6 +299,20 @@ input[type=text],input[type=password], textarea {
     padding: 0px 0px 12px 0px;
 }
 
+#results ul {
+    margin: 0px;
+    padding: 0px;
+}
+
+#results ul li {
+    list-style: none outside none;
+    padding: 8px 0px 8px 10px;
+}
+
+#mobile-index .searchResult {
+    display: block;
+}
+
 #index {
     
 }
