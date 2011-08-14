@@ -148,7 +148,7 @@ module.exports = {
 	                lng = data.query.longtiude;
                 }
                 
-                req.flash('info', data.query);
+                req.flash('info', data.query.latitude);
                 
     	    	restaurant.name = req.body.restaurant.name;
     	    	restaurant.phone = req.body.restaurant.phone;
