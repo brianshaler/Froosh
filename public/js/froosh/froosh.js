@@ -39,9 +39,6 @@ function gotNearby (data) {
         li.html(restaurant.name);
         $("#resultList").append(li);
     });
-    var li = $("<li>");
-    li.html("last...");
-    $("#resultList").append(li);
     showView("results");
 }
 
