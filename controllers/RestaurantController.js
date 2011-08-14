@@ -93,7 +93,7 @@ module.exports = {
                     //res.send({message: "No results"});
                 }
                 
-                Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 500/3959}, setup: true}, function (err, restaurants) {
+                Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 500/3959}}, function (err, restaurants) {
         	        if (err) {
         	            return res.send(err);
     	            }
