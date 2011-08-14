@@ -53,6 +53,7 @@ function router(req, res, next) {
         mobile = req.session.mobile == "true" ? true : false;
     }
     mobile = true;
+    res._locals = res._locals || {};
     res._locals.mobile = mobile;
     } catch (e) { res.send(e); }
     /**/
