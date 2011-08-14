@@ -286,14 +286,27 @@ input[type=text],input[type=password], textarea {
 
 
 #mobile-index {
-    
+    background-color: #46b67b;
+}
+
+#mobile-index .logo {
+    text-align: center;
 }
 
 #index {
     
 }
 
+.logo a {
+    border: none;
+}
+
+.logo span {
+    display: none;
+}
+
 footer {
+    clear: both;
     text-align: center;
 }
 

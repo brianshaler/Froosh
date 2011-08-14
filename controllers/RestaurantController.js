@@ -208,8 +208,6 @@ module.exports = {
 	                lng = data.query.longitude;
               }
               
-              req.flash('info', lat+","+lng);
-              
   	    	restaurant.loc.lng = lng;
   	    	restaurant.loc.lat = lat;
   	    	restaurant.setup = true;
