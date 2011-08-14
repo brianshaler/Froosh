@@ -53,6 +53,15 @@ module.exports = {
 	    var lat = null;
 	    var lng = null;
 	    
+	    if (req.query) {
+	        if (req.query["lat"]) {
+	            lat = req.query["lat"];
+            }
+	        if (req.query["lng"]) {
+	            lng = req.query["lng"];
+            }
+        }
+	    
 	    Restaurant.find({"$near": [lng, lat], "$maxDistance": 2 / 3959, setup: true}, function (err, restaurants) {
             if (restaurants.length > 0) {
 	            res.send(restaurants.map(function(u) {
@@ -63,7 +72,7 @@ module.exports = {
             }
         });
         
-	    if (!lat || !lng) { res.send({}); }
+	    if (!lat || !lng) { res.send({message: "No latitutde or longitude?"}); }
     },
 	
 	/**
