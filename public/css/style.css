@@ -302,11 +302,13 @@ input[type=text],input[type=password], textarea {
 #results ul {
     margin: 0px;
     padding: 0px;
+    border-top: solid 1px #72b985;
 }
 
 #results ul li {
     list-style: none outside none;
     padding: 8px 0px 8px 10px;
+    border-bottom: solid 1px #72b985;
 }
 
 #mobile-index .searchResult {
