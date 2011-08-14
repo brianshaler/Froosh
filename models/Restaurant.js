@@ -22,8 +22,8 @@ var Restaurant = new Schema({
 });
 
 /**/
-if (!Restaurant.prototype) { Restaurant.prototype = {}; }
-Restaurant.prototype.toPublic = function () {
+//if (!Restaurant.prototype) { Restaurant.prototype = {}; }
+Object.prototype.toPublic = function () {
     var obj = {};
     obj.name = this.name;
     obj.address = this.address;

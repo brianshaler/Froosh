@@ -71,7 +71,7 @@ module.exports = {
 	            }
                 if (restaurants.length > 0) {
     	            res.send(restaurants.map(function(u) {
-    	                return u.toPublic();
+    	                return u.toObject().toPublic();
                     }));
                 } else {
                     res.send({message: "No results"});
