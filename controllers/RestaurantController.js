@@ -70,10 +70,9 @@ module.exports = {
     	            return res.send(err);
 	            }
                 if (restaurants.length > 0) {
-                    res.send({message: restaurants.length + " restaurants"});
-//    	            res.send(restaurants.map(function(u) {
-//    	                return u.toPublic();
-//                    }));
+    	            res.send(restaurants.map(function(u) {
+    	                return u.toPublic();
+                    }));
                 } else {
                     res.send({message: "No results"});
                 }
