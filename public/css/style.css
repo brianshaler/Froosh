@@ -285,8 +285,13 @@ input[type=text],input[type=password], textarea {
 
 
 
+#index {
+    background-color: #46b67b !important;
+}
 
-
+#landingPage {
+    text-align: center;
+}
 
 #mobile-index {
     background-color: #46b67b !important;
