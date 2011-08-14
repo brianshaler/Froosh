@@ -43,15 +43,15 @@ function router(req, res, next) {
             /Android/.test(ua) || 
             /webOS\//.test(ua)) {
         mobile = true;
-        res.end("MOBILE!");
+        //res.end("MOBILE!");
     } else {
-        res.end("NOT MOBILE!");
+        //res.end("NOT MOBILE!");
     }
 	
 	if (req.query && req.session && req.query["mobile"]) {
 	    req.session.mobile = req.query["mobile"];
     }
-    if (req.session) {
+    if (req.session && req.session.mobile) {
         mobile = req.session.mobile == "true" ? true : false;
     }
     res._locals = res._locals || {};
