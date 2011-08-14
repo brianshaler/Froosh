@@ -148,7 +148,7 @@ module.exports = {
 	            
 	            if (data && data.query && data.query.latitude && data.query.longitude) {
 	                lat = data.query.latitude;
-	                lng = data.query.longtiude;
+	                lng = data.query.longitude;
                 }
                 
                 req.flash('info', lat+","+lng);
