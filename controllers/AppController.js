@@ -43,9 +43,6 @@ function router(req, res, next) {
             /Android/.test(ua) || 
             /webOS\//.test(ua)) {
         mobile = true;
-        //res.end("MOBILE!");
-    } else {
-        //res.end("NOT MOBILE!");
     }
 	
 	if (req.query && req.session && req.query["mobile"]) {
@@ -154,7 +151,11 @@ function index(req, res, next) {
 			}
 	    });
 	    
-		res.render('app',{controllers:controllers});
+	    if (res._locals && res._locals.mobile == true) {
+		    res.render('app/mobile-index',{controllers:controllers});
+        } else {
+		    res.render('app/index',{controllers:controllers});
+	    }
 	  
 	  });	
 	
