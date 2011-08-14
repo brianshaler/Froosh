@@ -81,7 +81,7 @@ module.exports = {
                     restaurants.forEach(function (restaurant) {
                         var found = false;
                         results.forEach(function (r) {
-                            if (r.id == restaurant._id) {
+                            if (r.id == restaurant.id) {
                                 found = true;
                             }
                         });
@@ -101,7 +101,7 @@ module.exports = {
                     restaurants.forEach(function (restaurant) {
                         var found = false;
                         results.forEach(function (r) {
-                            if (r.id == restaurant._id) {
+                            if (r.id == restaurant.id) {
                                 found = true;
                             }
                         });
