@@ -6,7 +6,8 @@
  var mongoose = require('mongoose'),	
 	Restaurant = mongoose.model('Restaurant'),
 	pager = require('../utils/pager.js'),
-	ViewTemplatePath = 'restaurants';
+	ViewTemplatePath = 'restaurants',
+	SimpleGeo = require('../lib/simplegeo').SimpleGeo;
 
 module.exports = {
 
@@ -133,7 +134,6 @@ module.exports = {
 	            if (req.body.restaurant.address == "") {
 	                checkLatLong(null, {});
                 } else {
-    	            var SimpleGeo = require('simplegeo').SimpleGeo;
                     var sg = new SimpleGeo('HMGpuKcpPdSr8GY4fHfhPK83nZuS48Uj','yxVG4ZzV4y7BMgDCukD6fSeN2gFdgMnF');
                 
                     sg.getContextByAddress(req.body.restaurant.address, checkLatLong);
