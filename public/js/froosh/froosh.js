@@ -67,9 +67,10 @@ function gotNearby (data) {
 function viewRestaurant (e) {
     console.log(e.target);
     console.log($(e.target).attr("id"));
+    e.preventDefault();
     
     var holder = null;
-    $(".resultItem").each(function (item) {
+    $(".resultItem").each(function (i, item) {
         if ($(item).has($(e.target)).length > 0) {
             holder = item;
         }
