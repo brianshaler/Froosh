@@ -35,7 +35,7 @@ function router(req, res, next) {
 	var fn = 'index';
 	
 	var mobile = false;
-	/*
+	/**/
 	var ua = req.headers['user-agent'];
     
     try {
@@ -45,7 +45,6 @@ function router(req, res, next) {
                 /webOS\//.test(ua)) {
             mobile = true;
         }
-    } catch (e) { }
 	
 	if (req.query && req.session && req.query["mobile"]) {
 	    req.session.mobile = req.query["mobile"];
@@ -55,6 +54,7 @@ function router(req, res, next) {
     }
     mobile = true;
     res._locals.mobile = mobile;
+    } catch (e) { res.send(e); }
     /**/
 	
 	// Default route
