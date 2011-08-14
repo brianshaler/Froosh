@@ -28,6 +28,6 @@ Object.prototype.restaurantToPublic = function () {
     obj.latest_deal = this.latest_deal;
     obj.loc = this.loc;
     return obj;
-}
+};
 
 mongoose.model('Restaurant', Restaurant);
