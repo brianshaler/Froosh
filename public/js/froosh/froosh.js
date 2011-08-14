@@ -37,11 +37,11 @@ function gotNearby (data) {
     data.forEach(function (restaurant) {
         var li = $("<li>");
         li.html(restaurant.name);
-        $("#resultList").appendChild(li);
+        $("#resultList").append(li);
     });
     var li = $("<li>");
     li.html("last...");
-    $("#resultList").appendChild(li);
+    $("#resultList").append(li);
 }
 
 function deniedLocation () {
