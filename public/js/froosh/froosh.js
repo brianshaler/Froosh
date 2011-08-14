@@ -42,6 +42,7 @@ function gotNearby (data) {
     var li = $("<li>");
     li.html("last...");
     $("#resultList").append(li);
+    showView("results");
 }
 
 function deniedLocation () {
