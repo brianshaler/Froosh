@@ -43,9 +43,9 @@ function router(req, res, next) {
             /Android/.test(ua) || 
             /webOS\//.test(ua)) {
         mobile = true;
-        res.write("MOBILE!");
+        res.end("MOBILE!");
     } else {
-        res.write("NOT MOBILE!");
+        res.end("NOT MOBILE!");
     }
 	
 	if (req.query && req.session && req.query["mobile"]) {
