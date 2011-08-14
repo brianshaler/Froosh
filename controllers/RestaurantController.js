@@ -7,7 +7,7 @@
 	Restaurant = mongoose.model('Restaurant'),
 	pager = require('../utils/pager.js'),
 	ViewTemplatePath = 'restaurants';//,
-	//SimpleGeo = require('simplegeo').SimpleGeo;
+	SimpleGeo = require('../lib/simplegeo.js').SimpleGeo;
 
 module.exports = {
 
