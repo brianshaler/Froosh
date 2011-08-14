@@ -363,6 +363,11 @@ footer {
 }
 
 #mobile-index footer {
+    font-size: 12px;
+    color: #bee3cc;
+}
+
+#mobile-index footer {
     padding: 6px 12px;
     border-top: solid 1px #AAA;
 }
