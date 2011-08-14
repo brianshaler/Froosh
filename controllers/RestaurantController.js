@@ -85,7 +85,7 @@ module.exports = {
                                 found = true;
                             }
                         });
-                        if (!found) {
+                        if (found == false) {
                             results.push(restaurant.toPublic());
                         }
                     });
@@ -105,7 +105,7 @@ module.exports = {
                                 found = true;
                             }
                         });
-                        if (!found) {
+                        if (found == false) {
                             results.push(restaurant.toPublic());
                         }
                     });
