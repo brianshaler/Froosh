@@ -23,6 +23,7 @@ var Restaurant = new Schema({
 
 Restaurant.methods.toPublic = function () {
     var obj = {};
+    obj.id = this._id;
     obj.name = this.name;
     obj.address = this.address;
     obj.latest_deal = this.latest_deal;
