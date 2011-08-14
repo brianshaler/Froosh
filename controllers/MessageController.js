@@ -31,15 +31,16 @@ module.exports = {
             from = from.substring(2);
         }
         
-        var twiml_start = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>\n<Sms>';
-        var twiml_end = '</Sms>\n</Response>';
+        var twiml_start = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>';
+        var twiml_end = '</Response>';
         
         Restaurant.find({phone: from}, function (err, restaurants) {
             if (restaurants.length > 0) {
                 restaurants.forEach(function (restaurant) {
                     restaurant.latest_deal = latest_deal;
                     restaurant.save();
-                    res.send(twiml_start + restaurant.latest_deal + twiml_end, {'Content-Type':'text/xml'}, 200);
+                    res.send(
+                    res.send(twiml_start + /* "<Sms>" + restaurant.latest_deal + "</Sms>" /**/ + twiml_end, {'Content-Type':'text/xml'}, 200);
                 });
             } else {
                 res.send(twiml_start + "I don't recognize this number... ("+from+")" + twiml_end, {'Content-Type':'text/xml'}, 200);
