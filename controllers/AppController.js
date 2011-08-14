@@ -38,13 +38,12 @@ function router(req, res, next) {
 	
 	var ua = req.headers['user-agent'];
     
-    try {
-        if (/mobile/i.test(ua) || 
-                /like Mac OS X/.test(ua) || 
-                /Android/.test(ua) || 
-                /webOS\//.test(ua)) {
-            mobile = true;
-        }
+    if (/mobile/i.test(ua) || 
+            /like Mac OS X/.test(ua) || 
+            /Android/.test(ua) || 
+            /webOS\//.test(ua)) {
+        mobile = true;
+    }
 	
 	if (req.query && req.session && req.query["mobile"]) {
 	    req.session.mobile = req.query["mobile"];
