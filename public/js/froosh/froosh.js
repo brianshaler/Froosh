@@ -48,7 +48,7 @@ function gotNearby (data) {
         if (myLat && myLng && restaurant.loc.lat && restaurant.loc.lng) {
             var divDistance = $('<div class="resultDistance">');
             var dist = geoDistance(restaurant.loc, {lat: myLat, lng: myLng});
-            dist = (Math.floor(dist*10)/10) + "m";
+            dist = (Math.floor(dist*10)/10) + "mi";
             divDistance.html(dist);
             divRestaurant.append(divDistance);
         }
@@ -77,7 +77,10 @@ function viewRestaurant (e) {
         }
     });
     if (holder) {
-        console.log("View restaurant: "+$(holder).attr("id"));
+        window.location = "/restaurant/view/"+$(holder).attr("id");
+    } else {
+        $("#errorMessage").html("I screwed up! I'M SORRY!!!");
+        showView("error");
     }
 }
 
