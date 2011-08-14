@@ -86,7 +86,7 @@ module.exports = {
                             }
                         });
                         if (!found) {
-                            results.push(r.toPublic());
+                            results.push(restaurant.toPublic());
                         }
                     });
                 } else {
@@ -106,7 +106,7 @@ module.exports = {
                             }
                         });
                         if (!found) {
-                            results.push(r.toPublic());
+                            results.push(restaurant.toPublic());
                         }
                     });
     	            
