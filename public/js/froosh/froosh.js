@@ -32,7 +32,9 @@ function getNearby (lat, lng) {
     });
 }
 
+var jsonResult;
 function gotNearby (data) {
+    jsonResult = data;
     $("#results").html("<ul id=\"resultList\"></ul>");
     data.forEach(function (restaurant) {
         var li = $("<li>");
