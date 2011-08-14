@@ -50,7 +50,7 @@ function gotNearby (data) {
             var dist = geoDistance(restaurant.loc, {lat: myLat, lng: myLng});
             dist = (Math.floor(dist*10)/10) + "m";
             divDistance.html(dist);
-            divDetails.append(divDistance);
+            divRestaurant.append(divDistance);
         }
         
         if (restaurant.latest_deal.length > 0) {
