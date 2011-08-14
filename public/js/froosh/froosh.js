@@ -8,6 +8,7 @@ function showView (view) {
 }
 
 function requestLocation () {
+    showView("askForLocation");
     navigator.geolocation.getCurrentPosition(gotLocation, deniedLocation, { enableHighAccuracy: true });
 }
 
@@ -18,7 +19,7 @@ function gotLocation (pos) {
     $("#lat").html(pos.coords.latitude);
     $("#lng").html(pos.coords.longitude);
     
-    showView("askForLocation");
+    showView("loading");
     getNearby(lat, lng);
 }
 
@@ -51,7 +52,6 @@ function deniedLocation () {
 $(document).ready(function () {
    $(".findStuff").click(function (e) {
        e.preventDefault();
-       showView("loading");
        requestLocation();
        return false;
    });
