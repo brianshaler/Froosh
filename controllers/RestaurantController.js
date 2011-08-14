@@ -130,8 +130,8 @@ module.exports = {
 	    	restaurant.phone = req.body.restaurant.phone;
 	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
 	    	restaurant.address = req.body.restaurant.address;
-	    	restaurant.loc.lat = req.body.restaurant.loc.lat;
-	    	restaurant.loc.lng = req.body.restaurant.loc.lng;
+	    	restaurant.loc.lat = parseFloat(req.body.restaurant.loc.lat);
+	    	restaurant.loc.lng = parseFloat(req.body.restaurant.loc.lng);
 	    	restaurant.setup = req.body.restaurant.setup;
 	    	
 	        restaurant.save(function(err) {
