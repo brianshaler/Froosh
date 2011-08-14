@@ -191,24 +191,49 @@ module.exports = {
 		  
 		  var restaurant = new Restaurant(req.body.restaurant);
 		  
-		  restaurant.save(function(err) {
+	            if (restaurant.address == "") {
+	                checkLatLong(null, {});
+              } else {
+                  var sg = new SimpleGeo('HMGpuKcpPdSr8GY4fHfhPK83nZuS48Uj','yxVG4ZzV4y7BMgDCukD6fSeN2gFdgMnF');
+              
+                  sg.getContextByAddress(restaurant.address, checkLatLong);
+              }
+	        
+	        function checkLatLong (err, data) {
+	            var lat = restaurant.loc.lat;
+	            var lng = restaurant.loc.lng;
+	            
+	            if (data && data.query && data.query.latitude && data.query.longitude) {
+	                lat = data.query.latitude;
+	                lng = data.query.longitude;
+              }
+              
+              req.flash('info', lat+","+lng);
+              
+  	    	restaurant.loc.lng = lng;
+  	    	restaurant.loc.lat = lat;
+  	    	restaurant.setup = true;
+
+    		  restaurant.save(function(err) {
 		   
-			if (err) {
-	    	  req.flash('error','Could not create restaurant: ' + err);
-	      	  res.redirect('/restaurants');
-	      	  return;
-			}
+    			if (err) {
+    	    	  req.flash('error','Could not create restaurant: ' + err);
+    	      	  res.redirect('/restaurants');
+    	      	  return;
+    			}
 	
-		    switch (req.params.format) {
-		      case 'json':
-		        res.send(restaurant.toObject());
-		        break;
+    		    switch (req.params.format) {
+    		      case 'json':
+    		        res.send(restaurant.toObject());
+    		        break;
 	
-		      default:
-		    	  req.flash('info','Restaurant created');
-		      	  res.redirect('/restaurant/show/' + restaurant.id);
-			 }
-		  });	  
+    		      default:
+    		    	  req.flash('info','Restaurant created');
+    		      	  res.redirect('/restaurant/show/' + restaurant.id);
+    			 }
+    		  });	  
+
+          }
 		  
 	},
 	  
