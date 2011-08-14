@@ -328,7 +328,8 @@ input[type=text],input[type=password], textarea {
 
 #mobile-index .resultDistance {
     display: block;
-    float: left;
+    float: right;
+    padding: 0px 10px 0px 12px;
 }
 
 #mobile-index .searchResult {
