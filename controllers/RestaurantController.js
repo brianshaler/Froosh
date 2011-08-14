@@ -62,17 +62,19 @@ module.exports = {
             }
         }
 	    
-	    Restaurant.find({"$near": [lng, lat], "$maxDistance": 2 / 3959, setup: true}, function (err, restaurants) {
-            if (restaurants.length > 0) {
-	            res.send(restaurants.map(function(u) {
-	                return u.toPublic();
-                }));
-            } else {
-                res.send([]);
-            }
-        });
-        
-	    if (!lat || !lng) { res.send({message: "No latitutde or longitude?"}); }
+	    if (!lat || !lng) {
+    	    Restaurant.find({"$near": [lng, lat], "$maxDistance": 2 / 3959, setup: true}, function (err, restaurants) {
+                if (restaurants.length > 0) {
+    	            res.send(restaurants.map(function(u) {
+    	                return u.toPublic();
+                    }));
+                } else {
+                    res.send({message: "No results"});
+                }
+            });
+        } else {
+            res.send({message: "No latitutde or longitude?"});
+        }
     },
 	
 	/**
