@@ -16,6 +16,8 @@ module.exports = {
     incoming: function(req, res, next) {
         var from = "";
         var latest_deal = "";
+	    var currentTime = Math.floor((new Date()).getTime()/1000);
+        
         try {
             from = req.body.From;
             latest_deal = req.body.Body;
@@ -38,11 +40,13 @@ module.exports = {
             if (restaurants.length > 0) {
                 restaurants.forEach(function (restaurant) {
                     restaurant.latest_deal = latest_deal;
+                    restaurant.deal_posted = currentTime;
                     restaurant.save();
                     res.send(twiml_start + /* "<Sms>" + restaurant.latest_deal + "</Sms>" /**/ + twiml_end, {'Content-Type':'text/xml'}, 200);
                 });
             } else {
-                res.send(twiml_start + "I don't recognize this number... ("+from+")" + twiml_end, {'Content-Type':'text/xml'}, 200);
+                //res.send(twiml_start + "I don't recognize this number... ("+from+")" + twiml_end, {'Content-Type':'text/xml'}, 200);
+                res.send(twiml_start+twiml_end, {'Content-Type':'text/xml'}, 200);
             }
         });
     },

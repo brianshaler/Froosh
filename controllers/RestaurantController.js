@@ -53,6 +53,8 @@ module.exports = {
 	nearby: function (req, res, next) {
 	    var lat = null;
 	    var lng = null;
+	    var results = [];
+	    var currentTime = Math.floor((new Date()).getTime()/1000);
 	    
 	    if (req.query) {
 	        if (req.query["lat"]) {
@@ -70,17 +72,46 @@ module.exports = {
 	    if (!lat || !lng) {
             return res.send({message: "No latitutde or longitude?", debug: req.query});
         } else {
-    	    Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 1000}, setup: true}, function (err, restaurants) {
+            
+    	    Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 300/3959}, deal_posted: {"$gt": currentTime-86400}, setup: true}, function (err, restaurants) {
     	        if (err) {
     	            return res.send(err);
 	            }
                 if (restaurants.length > 0) {
-    	            res.send(restaurants.map(function(u) {
-    	                return u.toPublic();
-                    }));
+                    restaurants.forEach(function (restaurant) {
+                        var found = false;
+                        results.forEach(function (r) {
+                            if (r.id == restaurant._id) {
+                                found = true;
+                            }
+                        });
+                        if (!found) {
+                            results.push(r.toPublic());
+                        }
+                    });
                 } else {
-                    res.send({message: "No results"});
+                    //res.send({message: "No results"});
                 }
+                
+                Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 300/3959}, deal_posted: {"$gt": currentTime-86400}, setup: true}, function (err, restaurants) {
+        	        if (err) {
+        	            return res.send(err);
+    	            }
+    	            
+                    restaurants.forEach(function (restaurant) {
+                        var found = false;
+                        results.forEach(function (r) {
+                            if (r.id == restaurant._id) {
+                                found = true;
+                            }
+                        });
+                        if (!found) {
+                            results.push(r.toPublic());
+                        }
+                    });
+    	            
+    	            res.send(results);
+        	    });
             });
         }
     },

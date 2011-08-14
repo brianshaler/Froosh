@@ -13,6 +13,7 @@ var Restaurant = new Schema({
     name:{type: String, required: true},
     phone: {type:String},
     latest_deal: {type:String},
+    deal_posted: {type:Number},
     address: {type:String},
     loc: {
         lng: Number,
