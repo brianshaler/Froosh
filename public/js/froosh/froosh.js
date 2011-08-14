@@ -38,6 +38,7 @@ function gotNearby (data) {
     $("#results").html("<ul id=\"resultList\"></ul>");
     data.forEach(function (restaurant) {
         var li = $('<li class="resultItem" id="'+restaurant.id+'">');
+        var link = $('<a href="#">');
         var divMessage = $('<div class="resultSpecial">');
         divMessage.html(restaurant.latest_deal);
         var divDetails = $('<div class="resultDetails">');
@@ -54,16 +55,29 @@ function gotNearby (data) {
         if (restaurant.latest_deal.length > 0) {
             li.append(divMessage);
         }
-        li.append(divDetails);
+        li.append(link);
+        link.append(divDetails);
         $("#resultList").append(li);
     });
     $(".resultItem").click(viewRestaurant);
+    $("a", $(".resultItem")).click(viewRestaurant);
     showView("results");
 }
 
 function viewRestaurant (e) {
-    console.log(e.currentTarget);
+    console.log(e.target);
     console.log($(e.target).attr("id"));
+    
+    var results = $(".resultItem");
+    var holder = null;
+    results.forEach(function (item) {
+        if ($(item).has(e.target).length > 0) {
+            holder = item;
+        }
+    });
+    if (holder) {
+        console.log("View restaurant: "+holder.attr("id"));
+    }
 }
 
 function deniedLocation () {
