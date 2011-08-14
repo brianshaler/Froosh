@@ -289,9 +289,14 @@ input[type=text],input[type=password], textarea {
     background-color: #46b67b !important;
 }
 
+#mobile-index {
+	font-size: 18px;
+}
+
 #mobile-index .logo {
     display: block;
     text-align: center;
+    padding: 0px 0px 12px 0px;
 }
 
 #index {
