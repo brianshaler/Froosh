@@ -1,6 +1,22 @@
-<section>
+<section id="home" class="autohide">
+	Welcome!
+	<a href="/restaurant/nearby" class="findStuff">Find stuff nearby</a>
+</section>
+<section id="menu" class="autohide">
+	
+</section>
+<section id="debug" class="autohide">
 	<div id="location">
 		latitude: <span id="lat"></span><br />
 		longitude: <span id="lng"></span>
 	</div>
 </section>
+<section id="askForLocation" class="autohide">
+	<p>Requesting location... (click "Allow"/"Share")</p>
+</section>
+<section id="requiresLocation" class="autohide">
+	<p>This feature requires your current location.</p>
+</section>
+<script>
+showView("home");
+</script>
