@@ -67,9 +67,10 @@ module.exports = {
         } else {
     	    Restaurant.find({"$near": [lng, lat], "$maxDistance": 2 / 3959, setup: true}, function (err, restaurants) {
                 if (restaurants.length > 0) {
-    	            res.send(restaurants.map(function(u) {
-    	                return u.toPublic();
-                    }));
+                    res.send({message: restaurants.length + " restaurants"});
+//    	            res.send(restaurants.map(function(u) {
+//    	                return u.toPublic();
+//                    }));
                 } else {
                     res.send({message: "No results"});
                 }
