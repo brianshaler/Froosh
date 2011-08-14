@@ -37,7 +37,7 @@ function gotNearby (data) {
     jsonResult = data;
     $("#results").html("<ul id=\"resultList\"></ul>");
     data.forEach(function (restaurant) {
-        var li = $('<li class="resultItem" id="'+restaurant._id+'">');
+        var li = $('<li class="resultItem" id="'+restaurant.id+'">');
         var divMessage = $('<div class="resultSpecial">');
         divMessage.html(restaurant.latest_deal);
         var divDetails = $('<div class="resultDetails">');
