@@ -129,32 +129,52 @@ module.exports = {
 	        
 	    	if (!restaurant) return next(err);
 	        
-	    	restaurant.name = req.body.restaurant.name;
-	    	restaurant.phone = req.body.restaurant.phone;
-	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
-	    	restaurant.address = req.body.restaurant.address;
-	    	restaurant.loc.lng = req.body.restaurant.loc.lng;
-	    	restaurant.loc.lat = req.body.restaurant.loc.lat;
-	    	restaurant.setup = req.body.restaurant.setup;
-	    	
-	        restaurant.save(function(err) {
+	        if (restaurant.address != req.body.restaurant.address) {
+	            if (req.body.restaurant.address == "") {
+	                checkLatLong(null, {});
+                } else {
+    	            var SimpleGeo = require('simplegeo').SimpleGeo;
+                    var sg = new SimpleGeo('HMGpuKcpPdSr8GY4fHfhPK83nZuS48Uj','yxVG4ZzV4y7BMgDCukD6fSeN2gFdgMnF');
+                
+                    sg.getContextByAddress(req.body.restaurant.address, checkLatLong);
+                }
+            } else {
+                checkLatLong(null, {});
+            }
 	        
-	    	  if (err) {
-	    		  console.log(err);
-	        	  req.flash('error','Could not update restaurant: ' + err);
-	          	  res.redirect('/restaurants');
-	          	  return;
-	    	  }
-	    		
-	          switch (req.params.format) {
-	            case 'json':
-	              res.send(restaurant.toObject());
-	              break;
-	            default:
-	              req.flash('info', 'Restaurant updated');
-	              res.redirect('/restaurant/show/' + req.params.id);
-	          }
-	        });
+	        function checkLatLong (err, data) {
+	            if (data && data.query && data.query.latitude && data.query.longitude) {
+	                lat = data.query.latitude;
+	                lng = data.query.longtiude;
+                }
+                
+    	    	restaurant.name = req.body.restaurant.name;
+    	    	restaurant.phone = req.body.restaurant.phone;
+    	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
+    	    	restaurant.address = req.body.restaurant.address;
+    	    	restaurant.loc.lng = req.body.restaurant.loc.lng;
+    	    	restaurant.loc.lat = req.body.restaurant.loc.lat;
+    	    	restaurant.setup = req.body.restaurant.setup;
+
+    	        restaurant.save(function(err) {
+
+    	    	  if (err) {
+    	    		  console.log(err);
+    	        	  req.flash('error','Could not update restaurant: ' + err);
+    	          	  res.redirect('/restaurants');
+    	          	  return;
+    	    	  }
+
+    	          switch (req.params.format) {
+    	            case 'json':
+    	              res.send(restaurant.toObject());
+    	              break;
+    	            default:
+    	              req.flash('info', 'Restaurant updated');
+    	              res.redirect('/restaurant/show/' + req.params.id);
+    	          }
+    	        });
+            }
 	      });
 	},
 	  
