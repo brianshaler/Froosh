@@ -1,7 +1,7 @@
 
 <h1>Editing Restaurant <%= restaurant.name %></h1>
 <%- partial('../messages') %>
-<form method="post" action="/restaurant/<%= restaurant.id %>">
+<form method="post" action="/restaurant/update/<%= restaurant.id %>">
   <input type="hidden" name="_method" value="put" />
   <p>Name: <input type="text" name="restaurant[name]", value="<%= restaurant.name %>" /></p>
   <p>Phone: <input type="text" name="restaurant[phone]", value="<%= restaurant.phone %>" /></p>
