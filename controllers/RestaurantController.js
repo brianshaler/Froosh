@@ -63,6 +63,8 @@ module.exports = {
         }
 	    
 	    if (!lat || !lng) {
+            res.send({message: "No latitutde or longitude?", debug: req.query});
+        } else {
     	    Restaurant.find({"$near": [lng, lat], "$maxDistance": 2 / 3959, setup: true}, function (err, restaurants) {
                 if (restaurants.length > 0) {
     	            res.send(restaurants.map(function(u) {
@@ -72,8 +74,6 @@ module.exports = {
                     res.send({message: "No results"});
                 }
             });
-        } else {
-            res.send({message: "No latitutde or longitude?", debug: req.query});
         }
     },
 	
