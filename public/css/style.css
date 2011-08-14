@@ -283,7 +283,15 @@ input[type=text],input[type=password], textarea {
 
 
 
-
+.findStuff {
+    display: block;
+    border-top: solid 1px #72b985;
+    border-bottom: solid 1px #72b985;
+    padding: 8px 0px;
+    color: #FFFFFF;
+    font-size: 22px;
+    margin: 20px 0px 0px 0px;
+}
 
 #index {
     background-color: #46b67b !important;
