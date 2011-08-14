@@ -288,8 +288,11 @@ input[type=text],input[type=password], textarea {
 
 
 
-#mobile-index, #mobile-index container {
+#mobile-index {
     background-color: #46b67b !important;
+}
+#mobile-index, #mobile-index p, #mobile-index li, #mobile-index a {
+    color: #e5f4ea;
 }
 
 #mobile-index {
