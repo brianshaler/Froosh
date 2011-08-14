@@ -19,7 +19,7 @@ module.exports = {
 	index: function(req, res, next) {
 		  	 
 		  var from = req.params.from ? parseInt(req.params.from) - 1 : 0;
-		  var to = req.params.to ? parseInt(req.params.to) : 10;
+		  var to = req.params.to ? parseInt(req.params.to) : 20;
 	      var total = 0;
 	      
 	      Restaurant.count({}, function (err, count) {
