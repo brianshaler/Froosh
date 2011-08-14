@@ -200,8 +200,8 @@ module.exports = {
               }
 	        
 	        function checkLatLong (err, data) {
-	            var lat = restaurant.loc.lat;
-	            var lng = restaurant.loc.lng;
+	            var lat = restaurant.loc.lat || 0;
+	            var lng = restaurant.loc.lng || 0;
 	            
 	            if (data && data.query && data.query.latitude && data.query.longitude) {
 	                lat = data.query.latitude;
