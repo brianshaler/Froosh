@@ -70,7 +70,7 @@ function viewRestaurant (e) {
     
     var holder = null;
     $(".resultItem").each(function (item) {
-        if ($(item).has(e.target).length > 0) {
+        if ($(item).has($(e.target)).length > 0) {
             holder = item;
         }
     });
