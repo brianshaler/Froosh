@@ -23,7 +23,7 @@ var Restaurant = new Schema({
 
 /**/
 //if (!Restaurant.prototype) { Restaurant.prototype = {}; }
-Restaurant.toPublic = function () {
+Restaurant.methods.toPublic = function () {
     var obj = {};
     obj.name = this.name;
     obj.address = this.address;
