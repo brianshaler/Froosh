@@ -290,6 +290,7 @@ input[type=text],input[type=password], textarea {
 }
 
 #mobile-index .logo {
+    display: block;
     text-align: center;
 }
 
