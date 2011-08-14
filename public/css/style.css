@@ -14,7 +14,10 @@ body {
 
 #container {
 	position: relative;
-	padding: 10px 10%;
+}
+
+#index #container {
+    padding: 10px 10%;
 }
 
 /*--- Basics ---*/
