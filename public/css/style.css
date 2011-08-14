@@ -350,6 +350,9 @@ input[type=text],input[type=password], textarea {
 }
 
 
+#mobile-index h1 {
+    color: #FFFFFF;
+}
 
 #index {
     
