@@ -81,7 +81,7 @@ module.exports = {
                     restaurants.forEach(function (restaurant) {
                         var found = false;
                         results.forEach(function (r) {
-                            if (r.id === restaurant._id) {
+                            if (r.id == restaurant._id) {
                                 found = true;
                             }
                         });
@@ -93,7 +93,7 @@ module.exports = {
                     //res.send({message: "No results"});
                 }
                 
-                Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 300/3959}, deal_posted: {"$gt": currentTime-86400}, setup: true}, function (err, restaurants) {
+                Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 300/3959}, setup: true}, function (err, restaurants) {
         	        if (err) {
         	            return res.send(err);
     	            }
@@ -101,7 +101,7 @@ module.exports = {
                     restaurants.forEach(function (restaurant) {
                         var found = false;
                         results.forEach(function (r) {
-                            if (r.id === restaurant._id) {
+                            if (r.id == restaurant._id) {
                                 found = true;
                             }
                         });
