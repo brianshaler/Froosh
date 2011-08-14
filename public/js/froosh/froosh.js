@@ -62,7 +62,7 @@ function gotNearby (data) {
 }
 
 function viewRestaurant (e) {
-    console.log(e.target);
+    console.log(e.currentTarget);
     console.log($(e.target).attr("id"));
 }
 
