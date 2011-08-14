@@ -68,9 +68,8 @@ function viewRestaurant (e) {
     console.log(e.target);
     console.log($(e.target).attr("id"));
     
-    var results = $(".resultItem");
     var holder = null;
-    results.forEach(function (item) {
+    $(".resultItem").each(function (item) {
         if ($(item).has(e.target).length > 0) {
             holder = item;
         }
