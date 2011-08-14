@@ -34,6 +34,25 @@ function router(req, res, next) {
 	var method = req.method.toLowerCase();
 	var fn = 'index';
 	
+	var mobile = false;
+	
+	var ua = req.headers['user-agent'];
+
+    if (/mobile/i.test(ua) || 
+            /like Mac OS X/.test(ua) || 
+            /Android/.test(ua) || 
+            /webOS\//.test(ua)) {
+        mobile = true;
+    }
+	
+	if (req.query && req.session && req.query["mobile"]) {
+	    req.session.mobile = req.query["mobile"]
+    }
+    if (req.session) {
+        mobile = req.session.mobile == "true" ? true : false;
+    }
+    res._locals.mobile = mobile;
+	
 	// Default route
 	if(controller.length == 0) {
 		index(req,res,next);
