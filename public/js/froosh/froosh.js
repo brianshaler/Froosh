@@ -106,6 +106,14 @@ function geoDistance (loc1, loc2) {
     return d / 1.609344;
 }
 
+/** Converts numeric degrees to radians */
+if (typeof(Number.prototype.toRad) === "undefined") {
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
+  }
+}
+
+
 $(document).ready(function () {
    $(".findStuff").click(function (e) {
        e.preventDefault();
