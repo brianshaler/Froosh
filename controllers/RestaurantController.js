@@ -73,7 +73,7 @@ module.exports = {
             return res.send({message: "No latitutde or longitude?", debug: req.query});
         } else {
             
-    	    Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 300/3959}, deal_posted: {"$gt": currentTime-86400}, setup: true}, function (err, restaurants) {
+    	    Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 500/3959}, deal_posted: {"$gt": currentTime-86400}, setup: true}, function (err, restaurants) {
     	        if (err) {
     	            return res.send(err);
 	            }
