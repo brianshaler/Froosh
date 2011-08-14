@@ -21,8 +21,6 @@ var Restaurant = new Schema({
     
 });
 
-/**/
-//if (!Restaurant.prototype) { Restaurant.prototype = {}; }
 Restaurant.methods.toPublic = function () {
     var obj = {};
     obj.name = this.name;
@@ -30,6 +28,6 @@ Restaurant.methods.toPublic = function () {
     obj.latest_deal = this.latest_deal;
     obj.loc = this.loc;
     return obj;
-}/**/
+}
 
 mongoose.model('Restaurant', Restaurant);

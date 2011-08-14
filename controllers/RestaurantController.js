@@ -61,9 +61,13 @@ module.exports = {
 	            lng = parseFloat(req.query["lng"]);
             }
         }
+        
+        if (req.params.format != "json") {
+            return res.send({message: "Sorry, only JSON supported."});
+        }
 	    
 	    if (!lat || !lng) {
-            res.send({message: "No latitutde or longitude?", debug: req.query});
+            return res.send({message: "No latitutde or longitude?", debug: req.query});
         } else {
     	    Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 1000}, setup: true}, function (err, restaurants) {
     	        if (err) {
