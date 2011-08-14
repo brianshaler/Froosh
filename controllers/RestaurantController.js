@@ -73,7 +73,7 @@ module.exports = {
                 }
             });
         } else {
-            res.send({message: "No latitutde or longitude?"});
+            res.send({message: "No latitutde or longitude?", debug: req.query});
         }
     },
 	
