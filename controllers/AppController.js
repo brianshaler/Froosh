@@ -51,6 +51,7 @@ function router(req, res, next) {
     if (req.session) {
         mobile = req.session.mobile == "true" ? true : false;
     }
+    mobile = true;
     res._locals.mobile = mobile;
 	
 	// Default route
