@@ -141,6 +141,30 @@ module.exports = {
 	},
 	
 	/**
+	 * Show action, returns shows a single item via views/restaurants/show.html view or via json
+	 * Default mapping to GET '/restaurant/:id'
+	 * For JSON use '/restaurant/:id.json'
+	 **/	
+	view: function(req, res, next) {	  		  
+			
+		  Restaurant.findById(req.params.id, function(err, restaurant) {
+			  
+			  if(err) return next(err);
+			  
+		      switch (req.params.format) {
+		        case 'json':
+		          res.send(restaurant.toObject());
+		          break;
+	
+		        default:
+		        	res.render(ViewTemplatePath + "/view",{restaurant:restaurant});
+		      }
+		      
+		  });
+		      
+	},
+	
+	/**
 	 * Edit action, returns a form via views/restaurants/edit.html view no JSON view.
 	 * Default mapping to GET '/restaurant/:id/edit'
 	 **/  	  
