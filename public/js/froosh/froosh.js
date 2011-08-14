@@ -71,12 +71,12 @@ function viewRestaurant (e) {
     
     var holder = null;
     $(".resultItem").each(function (i, item) {
-        if ($(item).has($(e.target)).length > 0) {
+        if ($(item).has(e.target).length > 0) {
             holder = item;
         }
     });
     if (holder) {
-        console.log("View restaurant: "+holder.attr("id"));
+        console.log("View restaurant: "+$(holder).attr("id"));
     }
 }
 
