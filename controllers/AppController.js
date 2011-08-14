@@ -22,8 +22,8 @@ module.exports = function(app) {
 	app.put("/:controller/:id", router);				// Update
 	app.del("/:controller/:id", router);				// Delete
 		
-	app.get("/:controller/:action", router);		// Action?
 	app.get("/:controller/:action.:format?", router);  	// Action with format
+	app.get("/:controller/:action", router);		// Action?
 }
 
 ///
