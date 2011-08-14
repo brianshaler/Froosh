@@ -337,6 +337,7 @@ input[type=text],input[type=password], textarea {
     list-style: none outside none;
     padding: 8px 0px 8px 10px;
     border-bottom: solid 1px #72b985;
+    background: url("listArrow.png") no-repeat scroll right center transparent;
 }
 
 #mobile-index .resultSpecial {
