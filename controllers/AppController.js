@@ -35,7 +35,7 @@ function router(req, res, next) {
 	var fn = 'index';
 	
 	var mobile = false;
-	/**/
+	
 	var ua = req.headers['user-agent'];
     
     try {
@@ -52,11 +52,8 @@ function router(req, res, next) {
     if (req.session) {
         mobile = req.session.mobile == "true" ? true : false;
     }
-    mobile = true;
     res._locals = res._locals || {};
     res._locals.mobile = mobile;
-    } catch (e) { res.send(e); }
-    /**/
 	
 	// Default route
 	if(controller.length == 0) {
