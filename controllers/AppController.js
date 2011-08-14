@@ -37,16 +37,18 @@ function router(req, res, next) {
 	var mobile = false;
 	
 	var ua = req.headers['user-agent'];
-
-    if (/mobile/i.test(ua) || 
-            /like Mac OS X/.test(ua) || 
-            /Android/.test(ua) || 
-            /webOS\//.test(ua)) {
-        mobile = true;
-    }
+    
+    try {
+        if (/mobile/i.test(ua) || 
+                /like Mac OS X/.test(ua) || 
+                /Android/.test(ua) || 
+                /webOS\//.test(ua)) {
+            mobile = true;
+        }
+    } catch (e) { }
 	
 	if (req.query && req.session && req.query["mobile"]) {
-	    req.session.mobile = req.query["mobile"]
+	    req.session.mobile = req.query["mobile"];
     }
     if (req.session) {
         mobile = req.session.mobile == "true" ? true : false;
