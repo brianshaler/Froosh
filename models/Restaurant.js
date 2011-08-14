@@ -15,8 +15,8 @@ var Restaurant = new Schema({
     latest_deal: {type:String},
     address: {type:String},
     loc: {
-        lat: Number,
-        lng: Number},
+        lng: Number,
+        lat: Number},
     setup: {type: Boolean, default: false}
     
 });
