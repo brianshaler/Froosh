@@ -322,6 +322,10 @@ footer {
 
 
 
+#loading {
+    text-align: center;
+}
+
 div.spinner {
   position: relative;
   width: 54px;
