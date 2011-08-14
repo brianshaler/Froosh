@@ -45,7 +45,7 @@ function gotNearby (data) {
         if (lat && lng && location.restaurant.lat && location.restaurant.lmg) {
             var divDistance = $('<div class="resultDistance">');
             var dist = geoDistance(restaurant.loc, {lat: lat, lng: lng});
-            divDistance.html(restaurant.distance);
+            divDistance.html(dist);
             divDetails.append(divDistance);
         }
         
