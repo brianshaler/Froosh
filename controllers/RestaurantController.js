@@ -63,8 +63,7 @@ module.exports = {
             }
         });
         
-	    
-	    if (!lat || !lng) { res.send({});
+	    if (!lat || !lng) { res.send({}); }
     },
 	
 	/**
