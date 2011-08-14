@@ -143,19 +143,22 @@ module.exports = {
             }
 	        
 	        function checkLatLong (err, data) {
+	            var lat = restaurant.loc.lat;
+	            var lng = restaurant.loc.lng;
+	            
 	            if (data && data.query && data.query.latitude && data.query.longitude) {
 	                lat = data.query.latitude;
 	                lng = data.query.longtiude;
                 }
                 
-                req.flash('info', data.query.latitude);
+                req.flash('info', lat+","+lng);
                 
     	    	restaurant.name = req.body.restaurant.name;
     	    	restaurant.phone = req.body.restaurant.phone;
     	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
     	    	restaurant.address = req.body.restaurant.address;
-    	    	restaurant.loc.lng = req.body.restaurant.loc.lng;
-    	    	restaurant.loc.lat = req.body.restaurant.loc.lat;
+    	    	restaurant.loc.lng = lng;
+    	    	restaurant.loc.lat = lat;
     	    	restaurant.setup = req.body.restaurant.setup;
 
     	        restaurant.save(function(err) {
