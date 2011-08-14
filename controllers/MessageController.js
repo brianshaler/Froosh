@@ -39,7 +39,6 @@ module.exports = {
                 restaurants.forEach(function (restaurant) {
                     restaurant.latest_deal = latest_deal;
                     restaurant.save();
-                    res.send(
                     res.send(twiml_start + /* "<Sms>" + restaurant.latest_deal + "</Sms>" /**/ + twiml_end, {'Content-Type':'text/xml'}, 200);
                 });
             } else {

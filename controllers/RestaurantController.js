@@ -49,6 +49,24 @@ module.exports = {
 	      	  	
 	},
 	
+	nearby: function (req, res, next) {
+	    var lat = null;
+	    var lng = null;
+	    
+	    Restaurant.find({"$near": [lng, lat], "$maxDistance": 2 / 3959, setup: true}, function (err, restaurants) {
+            if (restaurants.length > 0) {
+	            res.send(restaurants.map(function(u) {
+	                return u.toPublic().toObject();
+                }));
+            } else {
+                res.send([]);
+            }
+        });
+        
+	    
+	    if (!lat || !lng) { res.send({});
+    },
+	
 	/**
 	 * Show action, returns shows a single item via views/restaurants/show.html view or via json
 	 * Default mapping to GET '/restaurant/:id'
