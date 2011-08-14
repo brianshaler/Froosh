@@ -56,7 +56,7 @@ module.exports = {
 	    Restaurant.find({"$near": [lng, lat], "$maxDistance": 2 / 3959, setup: true}, function (err, restaurants) {
             if (restaurants.length > 0) {
 	            res.send(restaurants.map(function(u) {
-	                return u.toObject().restaurantToPublic();
+	                return u.toPublic();
                 }));
             } else {
                 res.send([]);

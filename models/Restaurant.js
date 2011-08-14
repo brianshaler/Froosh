@@ -21,15 +21,14 @@ var Restaurant = new Schema({
     
 });
 
-Object.prototype.restaurantToPublic = function () {
-    /** /
+if (!Restaurant.prototype) { Restaurant.prototype = {}; }
+Restaurant.prototype.toPublic = function () {
     var obj = {};
     obj.name = this.name;
     obj.address = this.address;
     obj.latest_deal = this.latest_deal;
     obj.loc = this.loc;
     return obj;
-    /**/
-};
+}
 
 mongoose.model('Restaurant', Restaurant);
