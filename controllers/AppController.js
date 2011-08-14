@@ -23,6 +23,7 @@ module.exports = function(app) {
 	app.del("/:controller/:id", router);				// Delete
 		
 	app.get("/:controller/:action", router);		// Action?
+	app.get("/:controller/:action.:format?", router);  	// Action with format
 }
 
 ///
