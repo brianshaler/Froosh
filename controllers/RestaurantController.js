@@ -55,10 +55,10 @@ module.exports = {
 	    
 	    if (req.query) {
 	        if (req.query["lat"]) {
-	            lat = req.query["lat"];
+	            lat = parseFloat(req.query["lat"]);
             }
 	        if (req.query["lng"]) {
-	            lng = req.query["lng"];
+	            lng = parseFloat(req.query["lng"]);
             }
         }
 	    
