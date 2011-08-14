@@ -148,7 +148,7 @@ module.exports = {
 	view: function(req, res, next) {	  		  
 			
 		  Restaurant.findById(req.params.id, function(err, restaurant) {
-			  res.send(err);
+			  if (err) return res.send(err);
 			  if(err) return next(err);
 			  
 		      switch (req.params.format) {
