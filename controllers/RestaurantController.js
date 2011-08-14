@@ -148,6 +148,8 @@ module.exports = {
 	                lng = data.query.longtiude;
                 }
                 
+                req.flash('info', data);
+                
     	    	restaurant.name = req.body.restaurant.name;
     	    	restaurant.phone = req.body.restaurant.phone;
     	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
