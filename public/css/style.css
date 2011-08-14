@@ -291,6 +291,7 @@ input[type=text],input[type=password], textarea {
     color: #FFFFFF;
     font-size: 24px;
     margin: 20px 0px 0px 0px;
+    background: url("/images/listArrow.png") no-repeat scroll right center transparent;
 }
 
 #index {
