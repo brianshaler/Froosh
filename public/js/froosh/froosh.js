@@ -1,6 +1,6 @@
 
-var lat = null;
-var lng = null;
+var myLat = null;
+var myLng = null;
 
 function showView (view) {
     $(".autohide").hide();
@@ -13,14 +13,14 @@ function requestLocation () {
 }
 
 function gotLocation (pos) {
-    lat = pos.coords.latitude;
-    lng = pos.coords.longitude;
+    myLat = pos.coords.latitude;
+    myLng = pos.coords.longitude;
     
     $("#lat").html(pos.coords.latitude);
     $("#lng").html(pos.coords.longitude);
     
     showView("loading");
-    getNearby(lat, lng);
+    getNearby(myLat, myLng);
 }
 
 function getNearby (lat, lng) {
@@ -45,9 +45,9 @@ function gotNearby (data) {
         var divRestaurant = $('<div class="resultRestaurant">');
         divRestaurant.html(restaurant.name);
         divDetails.append(divRestaurant);
-        if (lat && lng && restaurant.loc.lat && restaurant.loc.lng) {
+        if (myLat && myLng && restaurant.loc.lat && restaurant.loc.lng) {
             var divDistance = $('<div class="resultDistance">');
-            var dist = geoDistance(restaurant.loc, {lat: lat, lng: lng});
+            var dist = geoDistance(restaurant.loc, {lat: myLat, lng: myLng});
             dist = (Math.floor(dist*10)/10) + "m";
             divDistance.html(dist);
             divDetails.append(divDistance);
