@@ -308,6 +308,8 @@ input[type=text],input[type=password], textarea {
 
 #index .subhead {
     float: right;
+    margin-top: 38px;
+    height: 18px;
     color: #a5dbbe;
     font-size: 18px;
 }
