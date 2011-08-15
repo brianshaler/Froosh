@@ -295,7 +295,7 @@ input[type=text],input[type=password], textarea {
 }
 
 #index {
-    background-color: #3cac66 url("/images/texture.png") !important;
+    background: #3cac66 url("/images/texture.png") !important;
 }
 
 #landingPage {
