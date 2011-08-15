@@ -301,6 +301,10 @@ input[type=text],input[type=password], textarea {
     text-decoration: underline;
 }
 
+.light-gray {
+    color: #999;
+}
+
 #index #container {
     margin: 100px auto 40px;
     width: 960px;
