@@ -467,6 +467,11 @@ footer {
     margin: 20px 0px 0px 0px;
 }
 
+#index footer {
+    border-top: #a5dbbe;
+    color: #a5dbbe;
+}
+
 #mobile-index footer {
     font-size: 12px;
     color: #bee3cc;
