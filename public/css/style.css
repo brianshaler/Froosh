@@ -315,6 +315,10 @@ input[type=text],input[type=password], textarea {
     margin-bottom: 40px;
 }
 
+section.block p {
+    color: #a5dbbe;
+}
+
 #index #header {
     padding-bottom: 8px;
     border-bottom: solid 1px #a5dbbe;
