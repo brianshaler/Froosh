@@ -370,6 +370,7 @@ input[type=text],input[type=password], textarea {
     color: #a5dbbe;
     font-size: 22px;
     font-family: 'Coustard', helvetica, arial, sans-serif;
+    border-bottom: dotted 1px #a5dbbe;
 }
 
 
