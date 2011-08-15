@@ -320,7 +320,7 @@ section.block p {
 }
 
 #index #header {
-    padding-bottom: 8px;
+    padding: 4px 0px 8px 0px;
     border-bottom: dotted 1px #a5dbbe;
     margin-bottom: 20px;
 }
