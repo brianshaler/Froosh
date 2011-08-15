@@ -353,7 +353,13 @@ input[type=text],input[type=password], textarea {
 }
 
 #index #specials-list {
-    
+    float: left;
+    width: 450px;
+}
+
+#index #mobile-promo {
+    float: right;
+    width: 450px;
 }
 
 #index section .title {
