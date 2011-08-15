@@ -306,6 +306,12 @@ input[type=text],input[type=password], textarea {
     text-align: left;
 }
 
+#index #header {
+    padding-bottom: 8px;
+    border-bottom: solid 1px #a5dbbe;
+    margin-bottom: 20px;
+}
+
 #index .subhead {
     float: right;
     margin-top: 38px;
