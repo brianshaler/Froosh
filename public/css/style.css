@@ -293,6 +293,7 @@ input[type=text],input[type=password], textarea {
 #index {
     background: #3cac66 url("/images/texture.png") !important;
     text-align: center;
+    color: #FFF;
 }
 
 #landingPage {
@@ -300,9 +301,18 @@ input[type=text],input[type=password], textarea {
 }
 
 #index #container {
-    margin: 20px auto;
+    margin: 100px auto 40px;
     width: 960px;
     text-align: left;
+}
+
+#index .subhead {
+    float: right;
+    color: #a5dbbe;
+    font-size: 18px;
+}
+#index .subhead .dark {
+    color: #308d5a;
 }
 
 #mobile-index {
