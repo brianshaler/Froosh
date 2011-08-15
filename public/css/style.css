@@ -296,8 +296,9 @@ input[type=text],input[type=password], textarea {
     color: #FFF;
 }
 
-#landingPage {
-    text-align: center;
+#index a {
+    color: #ffc60f;
+    text-decoration: underline;
 }
 
 #index #container {
