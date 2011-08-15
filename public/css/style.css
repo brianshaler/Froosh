@@ -302,7 +302,7 @@ input[type=text],input[type=password], textarea {
 }
 
 .light-gray {
-    color: #999;
+    color: #AAA;
 }
 
 #index #container {
@@ -343,6 +343,7 @@ input[type=text],input[type=password], textarea {
     color: #534741;
     font-size: 32px;
     font-family: 'Coustard', helvetica, arial, sans-serif;
+    line-height: 120%;
 }
 
 .intro-container .intro-cta {
