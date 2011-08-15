@@ -311,6 +311,10 @@ input[type=text],input[type=password], textarea {
     text-align: left;
 }
 
+#index section.block {
+    margin-bottom: 40px;
+}
+
 #index #header {
     padding-bottom: 8px;
     border-bottom: solid 1px #a5dbbe;
