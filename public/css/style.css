@@ -323,6 +323,21 @@ input[type=text],input[type=password], textarea {
     color: #308d5a;
 }
 
+#index #intro {
+    
+}
+
+#index #intro .intro-container {
+    background: #FFF url("/images/home_map.png") right no-repeat;
+    height: 170px;
+}
+
+.intro-container .intro-content {
+    color: #534741;
+    font-size: 24px;
+    margin-right: 300px;
+}
+
 #mobile-index {
     background-color: #46b67b !important;
 }
