@@ -16,10 +16,6 @@ body {
 	position: relative;
 }
 
-#index #container {
-    padding: 10px 10%;
-}
-
 /*--- Basics ---*/
 h1, h2, h3, h4, h5, h6 {
 	font-weight:normal;
@@ -296,10 +292,17 @@ input[type=text],input[type=password], textarea {
 
 #index {
     background: #3cac66 url("/images/texture.png") !important;
+    text-align: center;
 }
 
 #landingPage {
     text-align: center;
+}
+
+#index #container {
+    margin: 20px auto;
+    width: 960px;
+    text-align: left;
 }
 
 #mobile-index {
