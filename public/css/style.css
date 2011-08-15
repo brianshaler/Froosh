@@ -352,6 +352,18 @@ input[type=text],input[type=password], textarea {
     font-size: 18px;
 }
 
+#index #specials-list {
+    
+}
+
+#index section .title {
+    color: #a5dbbe;
+    font-size: 22px;
+    font-family: 'Coustard', helvetica, arial, sans-serif;
+}
+
+
+
 #mobile-index {
     background-color: #46b67b !important;
 }
