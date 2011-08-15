@@ -328,6 +328,7 @@ input[type=text],input[type=password], textarea {
 }
 
 #index #intro .intro-container {
+    margin: 32px;
     background: #FFF url("/images/home_map.png") right no-repeat;
     height: 170px;
 }
