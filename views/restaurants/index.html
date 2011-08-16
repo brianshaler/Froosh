@@ -8,7 +8,7 @@
 		</tr>
 		<% restaurants.forEach(function(restaurant){ %>
 		<tr>
-			<td><a href="/restaurant/show/<%= restaurant.id %>"><%= restaurant.name %></a></td>
+			<td><a href="/restaurant/show/<%= restaurant.id %>"><%= restaurant.name %> (<%= restaurant.address %>)</a></td>
 		</tr>
 		<% }) %>
 		<tfoot>
