@@ -299,7 +299,7 @@ input[type=text],input[type=password], textarea {
 #index a {
     color: #ffc60f;
     text-decoration: none;
-    line-height: 100%;
+    line-height: 80%;
     border-bottom: solid 1px #ffc60f;
 }
 #index a.image {
