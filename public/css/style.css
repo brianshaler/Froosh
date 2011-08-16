@@ -384,6 +384,7 @@ section.block p {
 
 #mobile-index {
     background-color: #46b67b !important;
+    line-height: 115%;
 }
 #mobile-index, #mobile-index p, #mobile-index li, #mobile-index a {
     color: #e5f4ea;
