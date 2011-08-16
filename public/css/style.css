@@ -298,13 +298,9 @@ input[type=text],input[type=password], textarea {
 
 #index a {
     color: #ffc60f;
-    text-decoration: none;
+    text-decoration: underline;
     line-height: 80%;
     padding-bottom: -1px;
-    background: transparent url("/images/orange_border.png") repeat-x bottom right;
-}
-#index a.image {
-    background-image: none;
 }
 
 .light-gray {
