@@ -302,6 +302,9 @@ input[type=text],input[type=password], textarea {
     line-height: 100%;
     border-bottom: solid 1px #ffc60f;
 }
+#index a.image {
+    border: none !important;
+}
 
 .light-gray {
     color: #AAA;
