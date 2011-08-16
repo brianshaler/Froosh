@@ -299,7 +299,7 @@ input[type=text],input[type=password], textarea {
 #index a {
     color: #ffc60f;
     text-decoration: underline;
-    line-height: 80%;
+    line-height: 100%;
     padding-bottom: -1px;
 }
 
