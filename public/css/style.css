@@ -304,7 +304,7 @@ input[type=text],input[type=password], textarea {
     background: transparent url("/images/orange_border.png") repeat-x bottom right;
 }
 #index a.image {
-    border: none !important;
+    background-image: none;
 }
 
 .light-gray {
