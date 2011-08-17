@@ -1,0 +1,73 @@
+<section id="results">
+	<div id="resultMap">
+		<div id="mapCanvas"></div>
+		<script type="text/javascript"
+		    src="http://maps.googleapis.com/maps/api/js?sensor=false">
+		</script>
+		<script type="text/javascript">
+			var results = <%- JSON.stringify(results) %>;
+			
+			function putResultsOnMap () {
+				var latlng = new google.maps.LatLng(<%= lat %>, <%= lng %>);
+				var myOptions = {
+					zoom: 12,
+					center: latlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP
+				};
+				var map = new google.maps.Map(document.getElementById("mapCanvas"),
+					myOptions);
+
+				var image = new google.maps.MarkerImage('/images/orange_pointer.png',
+					new google.maps.Size(16, 22),
+					new google.maps.Point(0,0),
+					new google.maps.Point(7, 18));
+				
+			  $(results).each(function (i, result) {
+			    var myLatLng = new google.maps.LatLng(result.loc[1], result.loc[0]);
+			    var marker = new google.maps.Marker({
+			        position: myLatLng,
+			        map: map,
+			        icon: image,
+			        title: result.name
+			    });
+					
+					var contentString = "<div class=\"mapInfoWindow\">"+
+						"<h3><a href=\"/restaurant/view/" + result.id + "\">" + result.name + "</a></h3>" +
+						"<p>"+result.address+"<br />"+
+						result.restaurant_phone+"</p>";
+					var infowindow = new google.maps.InfoWindow({
+					    content: contentString
+					});
+					
+					google.maps.event.addListener(marker, 'click', function() {
+					  infowindow.open(map,marker);
+					});
+			  });
+			}
+			$(document).ready(putResultsOnMap);
+		</script>
+	</div>
+	<ul id="resultList">
+		<% results.forEach(function(restaurant){ %>
+		<li id="<%= restaurant.id %>" class="resultItem">
+			<% if (restaurant.specials && restaurant.specials.length > 0) { %>
+			<h3 class="resultSpecial">
+				<a href="#"><%= restaurant.specials[0].text %></a>
+			</h3>
+			<% } %>
+			<div class="resultDetails">
+				<a href="/restaurant/view/<%= restaurant.id %>" class="nocolor">
+					<div class="resultRestaurant">
+						<strong><%= restaurant.name %></strong> - <%= restaurant.address %>
+						<% if (restaurant.distance) { %>
+						<div class="resultDistance">
+							<%= restaurant.distance %>mi
+						</div>
+						<% } %>
+					</div>
+				</a>
+			</div>
+		</li>
+		<% }) %>
+	</ul>
+</section>

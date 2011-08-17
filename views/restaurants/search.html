@@ -1,0 +1,19 @@
+<section id="viewRestaurant">
+<h1>Restaurant Search</h1>
+<p>Find a restaurant near you by typing in your zip code below.</p>
+<form method="post" action="/restaurant/zip?next=search">
+	<p>
+	  ZIP/Postal Code: <input type="text" name="zip" value="<%= zip %>" /> &nbsp; 
+  	<button type="submit" value="Update">Search</button>
+  </p>
+</form>
+</section>
+<%
+try {
+	if (!results) {
+		results = [];
+	}
+} catch (e) { }
+if (results.length > 0) { %>
+	<%- partial("results") %>
+<% } %>

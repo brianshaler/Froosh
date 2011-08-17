@@ -19,7 +19,7 @@
 	</table>
 </div>
 <div style="float: left; margin-left: 5%; width: 35%;">
-	<form method="post" action="/restaurants">
+	<form class="boilerplate" method="post" action="/restaurants">
 		<input type="hidden" name="_method" value="post" />
 		<p>
 			Name: <input type="text" name="restaurant[name]" />
@@ -34,10 +34,10 @@
 			Address: <input type="text" name="restaurant[address]" />
 		</p>
 		<p>
-			Latitude: <input type="text" name="restaurant[loc][lat]" />
+			Latitude: <input type="text" name="restaurant[loc][1]" />
 		</p>
 		<p>
-			Longitude: <input type="text" name="restaurant[loc][lng]" />
+			Longitude: <input type="text" name="restaurant[loc][0]" />
 		</p>
 		<p>
 			<button class="button-submit" type="submit" value="Create">Create</button>

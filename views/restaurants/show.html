@@ -49,19 +49,37 @@
   		<th>Name</th><td><%= restaurant.name %></td>
   	</tr> 	
   	<tr>
-  		<th>Phone</th><td><%= restaurant.phone %></td>
+  		<th>Cell Phone</th><td><%= restaurant.cell_phone %></td>
   	</tr> 	
   	<tr>
-  		<th>Latest Deal</th><td><%= restaurant.latest_deal %></td>
+  		<th>Restaurant Phone</th><td><%= restaurant.restaurant_phone %></td>
   	</tr> 	
   	<tr>
   		<th>Address</th><td><%= restaurant.address %></td>
   	</tr> 	
   	<tr>
-  		<th>Latitude</th><td><%= restaurant.loc.lat %></td>
+  		<th>Description</th><td><%= restaurant.description %></td>
+  	</tr>
+  	<tr>
+  		<th>Latest Deal</th><td><%= restaurant.most_recent_special %></td>
   	</tr> 	
   	<tr>
-  		<th>Longitude</th><td><%= restaurant.loc.lng %></td>
+  		<th>Web Site (URL)</th><td><%= restaurant.web_site %></td>
+  	</tr>
+  	<tr>
+  		<th>Twitter (without @)</th><td><%= restaurant.twitter %></td>
+  	</tr>
+  	<tr>
+  		<th>Facebook</th><td><%= restaurant.facebook %></td>
+  	</tr>
+  	<tr>
+  		<th>Yelp</th><td><%= restaurant.yelp %></td>
+  	</tr> 	
+  	<tr>
+  		<th>Latitude</th><td><%= restaurant.loc[1] %></td>
+  	</tr> 	
+  	<tr>
+  		<th>Longitude</th><td><%= restaurant.loc[0] %></td>
   	</tr> 	
 </table>
 <a class="button-edit" href="/restaurant/edit/<%= restaurant.id %>" title="Edit restaurant ...">

@@ -4,10 +4,15 @@
  *  Created by create-controller script @ Sat Aug 13 2011 19:49:39 GMT+0000 (UTC)
  **/
  var mongoose = require('mongoose'),	
+	Special = mongoose.model('Special'),
 	Restaurant = mongoose.model('Restaurant'),
 	pager = require('../utils/pager.js'),
 	ViewTemplatePath = 'restaurants',
-	SimpleGeo = require('simplegeo-client').SimpleGeo;
+	SimpleGeo = require('simplegeo-client').SimpleGeo,
+	markdown = require("github-flavored-markdown");
+
+var sg_key = 'HMGpuKcpPdSr8GY4fHfhPK83nZuS48Uj',
+    sg_secret = 'yxVG4ZzV4y7BMgDCukD6fSeN2gFdgMnF';
 
 module.exports = {
 
@@ -17,6 +22,11 @@ module.exports = {
 	 * For JSON use '/restaurants.json'
 	 **/
 	index: function(req, res, next) {
+        res.redirect("/restaurants/search");
+        return;
+    },
+    
+	manage: function(req, res, next) {
 		  	 
 		  var from = req.params.from ? parseInt(req.params.from) - 1 : 0;
 		  var to = req.params.to ? parseInt(req.params.to) : 50;
@@ -50,6 +60,97 @@ module.exports = {
 	      	  	
 	},
 	
+	search: function (req, res, next) {
+	    
+	    var lat = null;
+	    var lng = null;
+	    var results = [];
+	    var currentTime = Math.floor((new Date()).getTime()/1000);
+        var zip = "";
+        
+        if (req.body && req.body.zip) {
+            zip = req.body.zip;
+        }
+	    if (req.query) {
+	        if (req.query["lat"]) {
+	            lat = parseFloat(req.query["lat"]);
+            }
+	        if (req.query["lng"]) {
+	            lng = parseFloat(req.query["lng"]);
+            }
+            if (zip == "" && req.query["zip"]) {
+                zip = req.query["zip"];
+            }
+        }
+	    
+	    if (!lat || !lng) {
+            switch (req.params.format) {
+                case 'json':
+                    return res.send({message: "No latitutde or longitude?", debug: req.query});
+                    break;
+                default:
+                    return res.render(ViewTemplatePath + "/search", {results: results, zip: zip});
+            }
+        } else {
+            
+            function nearbyCallback (err, results) {
+                if (err) {
+                    switch (req.params.format) {
+                        case 'json':
+                            return res.send({message: err, debug: req.query});
+                            break;
+                        default:
+                            return res.render("error",{message:err});
+                    }
+                }
+                switch (req.params.format) {
+                    case 'json':
+                        return res.send(results);
+                        break;
+                    default:
+                        return res.render(ViewTemplatePath + "/search",{results:results, zip: zip, lat: lat, lng: lng});
+                }
+            }
+            
+            getNearby(lat, lng, nearbyCallback);
+            
+        }
+    },
+    
+    zip: function (req, res, next) {
+        
+        var zip = req.body.zip;
+        var lng = null;
+        var lat = null;
+        
+        if (zip && zip.length >= 5) {
+            var sg = new SimpleGeo(sg_key,sg_secret);
+        
+            sg.getContextByAddress(zip, checkLatLong);
+            
+	        function checkLatLong (err, data) {
+	            
+	            if (err) {
+	                return res.render("error",{message:err});
+                }
+	            if (data && data.query && data.query.latitude && data.query.longitude) {
+	                lat = data.query.latitude;
+	                lng = data.query.longitude;
+                }
+                if (!lat || !lng) {
+                    res.render("error",{message:"Unable to geolocate that ZIP code.."});
+                } else {
+                    res.redirect("/restaurants/search?zip="+zip+"&lat="+lat+"&lng="+lng);
+                    return;
+                }
+            }
+            
+        } else {
+            res.render("error",{message:"No zip?"});
+        }
+        
+    },
+	
 	nearby: function (req, res, next) {
 	    var lat = null;
 	    var lng = null;
@@ -65,54 +166,39 @@ module.exports = {
             }
         }
         
-        if (req.params.format != "json") {
-            return res.send({message: "Sorry, only JSON supported."});
-        }
-	    
 	    if (!lat || !lng) {
-            return res.send({message: "No latitutde or longitude?", debug: req.query});
+	        
+            switch (req.params.format) {
+                case 'json':
+                    return res.send({message: "No latitutde or longitude?", debug: req.query});
+                    break;
+                default:
+                    res.render("error",{message:"No latitude or longitude?"});
+            }
+		    
         } else {
             
-    	    Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 500/3959}, deal_posted: {"$gt": currentTime-86400}, setup: true}, function (err, restaurants) {
-    	        if (err) {
-    	            return res.send(err);
-	            }
-                if (restaurants.length > 0) {
-                    restaurants.forEach(function (restaurant) {
-                        var found = false;
-                        results.forEach(function (r) {
-                            if (r.id == restaurant.id) {
-                                found = true;
-                            }
-                        });
-                        if (found == false) {
-                            results.push(restaurant.toPublic());
-                        }
-                    });
-                } else {
-                    //res.send({message: "No results"});
+            function nearbyCallback (err, results) {
+                if (err) {
+                    switch (req.params.format) {
+                        case 'json':
+                            return res.send({message: err, debug: req.query});
+                            break;
+                        default:
+                            res.render("error",{message:err});
+                    }
                 }
-                
-                Restaurant.find({loc: {"$near": [lat, lng], "$maxDistance": 500/3959}}, function (err, restaurants) {
-        	        if (err) {
-        	            return res.send(err);
-    	            }
-    	            
-                    restaurants.forEach(function (restaurant) {
-                        var found = false;
-                        results.forEach(function (r) {
-                            if (r.id == restaurant.id) {
-                                found = true;
-                            }
-                        });
-                        if (found == false) {
-                            results.push(restaurant.toPublic());
-                        }
-                    });
-    	            
-    	            res.send(results);
-        	    });
-            });
+                switch (req.params.format) {
+                    case 'json':
+                        return res.send(results);
+                        break;
+                    default:
+                        res.render(ViewTemplatePath + "/results",{results:results});
+                }
+            }
+            
+            getNearby(lat, lng, nearbyCallback);
+
         }
     },
 	
@@ -157,7 +243,7 @@ module.exports = {
 		          break;
 	
 		        default:
-		        	res.render(ViewTemplatePath + "/view",{restaurant:restaurant});
+		        	res.render(ViewTemplatePath + "/view",{restaurant:restaurant, markdown: markdown});
 		      }
 		      
 		  });
@@ -189,7 +275,7 @@ module.exports = {
 	            if (req.body.restaurant.address == "") {
 	                checkLatLong(null, {});
                 } else {
-                    var sg = new SimpleGeo('HMGpuKcpPdSr8GY4fHfhPK83nZuS48Uj','yxVG4ZzV4y7BMgDCukD6fSeN2gFdgMnF');
+                    var sg = new SimpleGeo(sg_key,sg_secret);
                 
                     sg.getContextByAddress(req.body.restaurant.address, checkLatLong);
                 }
@@ -198,22 +284,22 @@ module.exports = {
             }
 	        
 	        function checkLatLong (err, data) {
-	            var lat = restaurant.loc.lat;
-	            var lng = restaurant.loc.lng;
+	            var lng = restaurant.loc[0];
+	            var lat = restaurant.loc[1];
 	            
 	            if (data && data.query && data.query.latitude && data.query.longitude) {
 	                lat = data.query.latitude;
 	                lng = data.query.longitude;
                 }
                 
-                req.flash('info', lat+","+lng);
+                for (var k in req.body.restaurant) {
+                    if (k != "loc" && k != "most_recent_special" && k != "specials") {
+                        restaurant[k] = req.body.restaurant[k];
+                    }
+                }
                 
-    	    	restaurant.name = req.body.restaurant.name;
-    	    	restaurant.phone = req.body.restaurant.phone;
-    	    	restaurant.latest_deal = req.body.restaurant.latest_deal;
-    	    	restaurant.address = req.body.restaurant.address;
-    	    	restaurant.loc.lng = lng;
-    	    	restaurant.loc.lat = lat;
+    	    	restaurant.loc[0] = lng;
+    	    	restaurant.loc[1] = lat;
     	    	restaurant.setup = req.body.restaurant.setup;
 
     	        restaurant.save(function(err) {
@@ -221,7 +307,7 @@ module.exports = {
     	    	  if (err) {
     	    		  console.log(err);
     	        	  req.flash('error','Could not update restaurant: ' + err);
-    	          	  res.redirect('/restaurants');
+    	          	  res.redirect('/restaurants/edit/' + req.params.id);
     	          	  return;
     	    	  }
 
@@ -231,7 +317,7 @@ module.exports = {
     	              break;
     	            default:
     	              req.flash('info', 'Restaurant updated');
-    	              res.redirect('/restaurant/show/' + req.params.id);
+    	              res.redirect('/restaurant/view/' + req.params.id);
     	          }
     	        });
             }
@@ -249,22 +335,22 @@ module.exports = {
 	            if (restaurant.address == "") {
 	                checkLatLong(null, {});
               } else {
-                  var sg = new SimpleGeo('HMGpuKcpPdSr8GY4fHfhPK83nZuS48Uj','yxVG4ZzV4y7BMgDCukD6fSeN2gFdgMnF');
+                  var sg = new SimpleGeo(sg_key,sg_secret);
               
                   sg.getContextByAddress(restaurant.address, checkLatLong);
               }
 	        
 	        function checkLatLong (err, data) {
-	            var lat = restaurant.loc.lat || 0;
-	            var lng = restaurant.loc.lng || 0;
+	            var lng = restaurant.loc[0] || 0;
+	            var lat = restaurant.loc[1] || 0;
 	            
 	            if (data && data.query && data.query.latitude && data.query.longitude) {
 	                lat = data.query.latitude;
 	                lng = data.query.longitude;
               }
               
-  	    	restaurant.loc.lng = lng;
-  	    	restaurant.loc.lat = lat;
+  	    	restaurant.loc[0] = lng;
+  	    	restaurant.loc[1] = lat;
   	    	restaurant.setup = true;
 
     		  restaurant.save(function(err) {
@@ -318,3 +404,88 @@ module.exports = {
 	}
 	
 };
+
+function getNearby (lat, lng, callback) {
+    var results = [];
+    var currentTime = Math.floor((new Date()).getTime()/1000);
+    
+    function addResults (restaurants, until) {
+        restaurants.forEach(function (restaurant) {
+            var found = false;
+            results.forEach(function (r) {
+                if (r.id == restaurant.id) {
+                    found = true;
+                }
+            });
+            if (found == false && (!until || results.length < until)) {
+                results.push(restaurant.toPublic());
+            }
+        });
+    }
+    
+    function geoDistance (loc1, loc2) {
+        var lat1 = loc1.lat;
+        var lon1 = loc1.lng;
+        var lat2 = loc2.lat;
+        var lon2 = loc2.lng;
+
+        var R = 6371; // km
+        var dLat = (lat2-lat1).toRad();
+        var dLon = (lon2-lon1).toRad();
+        var lat1 = lat1.toRad();
+        var lat2 = lat2.toRad();
+
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c;
+
+        return d / 1.609344;
+    }
+
+    /** Converts numeric degrees to radians */
+    if (typeof(Number.prototype.toRad) === "undefined") {
+      Number.prototype.toRad = function() {
+        return this * Math.PI / 180;
+      }
+    }
+    
+    function finalize () {
+        results.forEach(function (result) {
+            result.distance = Math.floor(geoDistance({lat: lat, lng: lng}, {lat: result.loc[1], lng: result.loc[0]})*10)/10;
+        });
+        
+        return callback(null, results);
+    }
+    
+    
+    Restaurant.find({loc: {"$near": [lng, lat], "$maxDistance": 500/3959}, deal_posted: {"$gt": currentTime-86400}, setup: true}, function (err, restaurants) {
+        if (err) {
+            return callback(err);
+        }
+        addResults(restaurants);
+        
+        Restaurant.find({loc: {"$near": [lng, lat], "$maxDistance": 100/3959}}, function (err, restaurants) {
+	        if (err) {
+                return callback(err);
+            }
+            
+            addResults(restaurants);
+            
+            if (results.length < 10) {
+                Restaurant.find({loc: {"$near": [lng, lat], "$maxDistance": 5000/3959}}, function (err, restaurants) {
+        	        if (err) {
+                        return callback(err);
+                    }
+
+                    addResults(restaurants, 10);
+                    
+                    return finalize();
+                });
+                
+            } else {
+                return finalize();
+            }
+	    });
+    });
+}

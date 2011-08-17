@@ -1,18 +1,69 @@
+<script type="text/javascript">
+	$(function(){
 
-<h1>Editing Restaurant <%= restaurant.name %></h1>
-<%- partial('../messages') %>
-<form method="post" action="/restaurant/update/<%= restaurant.id %>">
-  <input type="hidden" name="_method" value="put" />
-  <p>Name: <input type="text" name="restaurant[name]", value="<%= restaurant.name %>" /></p>
-  <p>Phone: <input type="text" name="restaurant[phone]", value="<%= restaurant.phone %>" /></p>
-  <p>Latest Special: <input type="text" name="restaurant[latest_deal]", value="<%= restaurant.latest_deal %>" /></p>
-  <p>Special Posted: <input type="text" name="restaurant[deal_posted]", value="<%= restaurant.deal_posted %>" /></p>
-  <p>Address: <input type="text" name="restaurant[address]", value="<%= restaurant.address %>" /></p>
-  <p>Latitude: <input type="text" name="restaurant[loc][lat]", value="<%= restaurant.loc.lat %>" /></p>
-  <p>Longitude: <input type="text" name="restaurant[loc][lng]", value="<%= restaurant.loc.lng %>" /></p>
-  <p>Setup: <input type="text" name="restaurant[setup]", value="<%= restaurant.setup %>" /></p>
-  <p>
-  	<button class="button-submit" type="submit" value="Update">Save</button>
-  	<a class="button-cancel" href="/restaurant/show/<%= restaurant.id %>">Cancel</a>
-  </p>
-</form>
+		// Delete Restaurant
+		$('.button-delete').click(function(){
+			
+			var restaurantId = this.id;
+			
+			$("#dialog-confirm" ).dialog({
+				resizable: false,
+				height:180,
+				width:400,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$( this ).dialog( "close" );
+						$.ajax({
+							   type: "DELETE",
+							   url: "/restaurant/" + restaurantId,				   
+							   success: function(msg) {				   	  
+								  window.location.replace("/restaurants");
+							   },
+							   error: function(msg) {					  
+								  alert("I was unable to delete the restaurant - something has gone wrong, apologies!");
+							   }
+						});
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+			
+			return false;
+		});
+		
+	});
+</script>
+<div id="dialog-confirm" style="display: none;" title="Delete restaurant?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<section id="editRestaurant" class="block">
+	<%- partial('../messages') %>
+	<form method="post" action="/restaurant/update/<%= restaurant.id %>">
+	  <input type="hidden" name="_method" value="put" />
+		<button class="button-submit" style="float: right;" type="submit" value="Update">Save</button>
+		<div class="h1"><input type="text" name="restaurant[name]" value="<%= restaurant.name %>" /></div>
+		<div id="restaurantMap" style="width: 400px; height: 340px; background-color: #DDFFE3;"></div>
+		<dl>
+			<dt>Address:</dt><dd><input type="text" name="restaurant[address]" value="<%= restaurant.address %>" /></dd>
+		  <dt>Restaurant Phone:</dt><dd><input type="text" name="restaurant[restaurant_phone]" value="<%= restaurant.restaurant_phone %>" /></dd>
+		  <dt>Web Site:</dt><dd><input type="text" name="restaurant[web_site]" value="<%= restaurant.web_site %>" /></dd>
+		  <dt>Twitter:</dt><dd><input type="text" name="restaurant[twitter]" value="<%= restaurant.twitter %>" /></dd>
+		  <dt>Facebook:</dt><dd><input type="text" name="restaurant[facebook]" value="<%= restaurant.facebook %>" /></dd>
+		  <dt>Yelp:</dt><dd><input type="text" name="restaurant[yelp]" value="<%= restaurant.yelp %>" /></dd>
+		</dl>
+	  <p>
+			Description:
+			<br />
+			<textarea name="restaurant[description]"><%= restaurant.description %></textarea>
+		</p>
+		<div style="width: 500px; text-align: right;">
+			<button class="button-delete" id="<%= restaurant.id %>"  title="Delete restaurant ...">Delete</button>
+			<button class="button-submit" style="float: right;" type="submit" value="Update">Save</button>
+		</div>
+	</form>
+	<div style="clear: both; height: 1px;"><!-- --></div>
+</section>
