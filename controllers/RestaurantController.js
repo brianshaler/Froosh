@@ -463,7 +463,7 @@ function getNearby (lat, lng, callback) {
     }
     
     
-    Restaurant.find({"specials":{"$exists": true}}).find({loc: {"$near": [lng, lat], "$maxDistance": 500/3959}, "specials.created_at": {"$gte": new Date((new Date()).getTime()-86400*7*1000)}, setup: true}, function (err, restaurants) {
+    Restaurant.find({loc: {"$near": [lng, lat], "$maxDistance": 500/3959}, "specials.created_at": {"$gte": new Date((new Date()).getTime()-86400*7*1000)}, setup: true}, function (err, restaurants) {
         if (err) {
             return callback(err);
         }
