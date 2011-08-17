@@ -435,6 +435,14 @@ section.block p {
     margin: 0px 0px 20px 40px;
 }
 
+.desktop .restaurantSpecial {
+    background-color: #3CAC66;
+    border: dotted 1px #72b985;
+    padding: 1em 1em 0 1em;
+    width: 500px;
+}
+
+
 .desktop #resultMap {
     float: right;
     width: 400px; height: 400px;
