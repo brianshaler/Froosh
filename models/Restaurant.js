@@ -4,20 +4,27 @@
  **/
  
 var mongoose = require('mongoose'),
+    tmp = require('../models/Special.js'), // Huh? I have to manually pre-load this other model??
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+mongoose.model("Special", tmp.Special);
+var Special = mongoose.model("Special");
+
 var Restaurant = new Schema({
 
-    // Single default property
-    name:{type: String, required: true},
-    phone: {type:String},
-    latest_deal: {type:String},
-    deal_posted: {type:Number},
-    address: {type:String},
-    loc: {
-        lng: Number,
-        lat: Number},
+    name: {type: String, required: true},
+    cell_phone: {type:String, default: ""},
+    address: {type: String, default: ""},
+    restaurant_phone: {type:String, default: ""},
+    description: {type: String, default: ""},
+    web_site: {type: String, default: ""},
+    twitter: {type: String, default: ""},
+    facebook: {type: String, default: ""},
+    yelp: {type: String, default: ""},
+    specials: [Special],
+    most_recent_special: {}, // can't reference a single Special?!
+    loc: [Number],
     setup: {type: Boolean, default: false}
     
 });
@@ -27,9 +34,18 @@ Restaurant.methods.toPublic = function () {
     obj.id = this._id;
     obj.name = this.name;
     obj.address = this.address;
-    obj.latest_deal = this.latest_deal;
+    obj.description = this.description || "";
+    obj.restaurant_phone = this.restaurant_phone || "";
+    obj.web_site = this.web_site || "";
+    obj.twitter = this.twitter || "";
+    obj.facebook = this.facebook || "";
+    obj.yelp = this.yelp || "";
     obj.loc = this.loc;
+    obj.loc.lng = this.loc[0];
+    obj.loc.lat = this.loc[1];
     return obj;
 }
 
 mongoose.model('Restaurant', Restaurant);
+
+exports.Restaurant = Restaurant;
