@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 mongoose.model("Special", tmp.Special);
-var Special = mongoose.model("Special");
+var Special = mongoose.model("Special").Special;
 
 var Restaurant = new Schema({
 
@@ -23,7 +23,6 @@ var Restaurant = new Schema({
     facebook: {type: String, default: ""},
     yelp: {type: String, default: ""},
     specials: [Special],
-    most_recent_special: {}, // can't reference a single Special?!
     loc: [Number],
     setup: {type: Boolean, default: false}
     
@@ -44,6 +43,13 @@ Restaurant.methods.toPublic = function () {
     obj.loc.lng = this.loc[0];
     obj.loc.lat = this.loc[1];
     return obj;
+}
+
+Restaurant.methods.getLatestSpecial = function () {
+    if (this.specials && this.specials[0]) {
+        return this.specials[this.specials.length-1];
+    }
+    return false;
 }
 
 mongoose.model('Restaurant', Restaurant);

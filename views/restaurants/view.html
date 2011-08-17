@@ -10,5 +10,9 @@
 		<iframe width="400px" height="340" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
 			src="http://maps.google.com/maps?q=<%= restaurant.address %> (<%= restaurant.name %>)&amp;z=14&amp;iwloc=&amp;output=embed"></iframe>
 	</div>
+	<% var latest = restaurant.getLatestSpecial();
+		if (latest && latest.created_at.getTime() > (new Date()).getTime() - 86400*1000*7) { %>
+			<p><strong>Latest special:</strong> <%= latest.text %> <em style="font-size: 80%;">posted <%= latest.created_at.getDate() %>-<%= latest.created_at.getMonth()+1 %>-<%= latest.created_at.getFullYear() %></em></p>
+	<% } %>
 	<p><%- markdown.parse(restaurant.description) %></p>
 </section>

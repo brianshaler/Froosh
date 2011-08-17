@@ -5,6 +5,7 @@
  **/
  var mongoose = require('mongoose'),	
 	Message = mongoose.model('Message'),
+	Special = mongoose.model('Special'),
 	Restaurant = mongoose.model('Restaurant'),
 	pager = require('../utils/pager.js'),
 	ViewTemplatePath = 'messages',
@@ -12,20 +13,24 @@
     Twiml = require('twilio').Twiml;
 
 module.exports = {
+    
+    test: function (req, res, next) {
+        res.send("TEST");
+    },
 
     incoming: function(req, res, next) {
         var from = "";
-        var latest_deal = "";
+        var special_text = "";
 	    var currentTime = Math.floor((new Date()).getTime()/1000);
         
         try {
             from = req.body.From;
-            latest_deal = req.body.Body;
+            special_text = req.body.Body;
         } catch (e) { }
         if (from == "") {
             try {
-                from = req.query["from"];
-                latest_deal = req.query["latest_deal"];
+                from = req.query["From"];
+                special_text = req.query["Body"];
             } catch (e) { }
         }
         
@@ -35,18 +40,31 @@ module.exports = {
         
         var twiml_start = '<?xml version="1.0" encoding="UTF-8" ?>\n<Response>';
         var twiml_end = '</Response>';
+        var debug = "";
+        debug += "<from>"+from+"</from>";
         
-        Restaurant.find({phone: from}, function (err, restaurants) {
+        Restaurant.find({cell_phone: from}).limit(1).find(function (err, restaurants) {
+            debug += "<restaurants>"+restaurants.length+"</restaurants>";
             if (restaurants.length > 0) {
                 restaurants.forEach(function (restaurant) {
-                    restaurant.latest_deal = latest_deal;
-                    restaurant.deal_posted = currentTime;
+                    //debug += "<existingSpecials>"+restaurants.specials.length+"</existingSpecials>";
+                    var special = new Special({
+                        created_at: new Date(),
+                        text: special_text
+                    });
+                    if (!restaurant.specials) {
+                        restaurant.specials = [special];
+                    } else {
+                        restaurant.specials.push(special);
+                    }
+                    debug += "<special>"+special_text+"</special>";
                     restaurant.save();
-                    res.send(twiml_start + /* "<Sms>" + restaurant.latest_deal + "</Sms>" /**/ + twiml_end, {'Content-Type':'text/xml'}, 200);
+                    return res.send(twiml_start /* + "<Sms>" + restaurant.latest_deal + "</Sms>" /**/ + debug + twiml_end, {'Content-Type':'text/xml'}, 200);
                 });
             } else {
                 //res.send(twiml_start + "I don't recognize this number... ("+from+")" + twiml_end, {'Content-Type':'text/xml'}, 200);
-                res.send(twiml_start+twiml_end, {'Content-Type':'text/xml'}, 200);
+                res.send(twiml_start+debug+twiml_end, {'Content-Type':'text/xml'}, 200);
+                return;
             }
         });
     },
