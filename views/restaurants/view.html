@@ -13,7 +13,7 @@
 	<% var latest = restaurant.getLatestSpecial();
 		if (latest && latest.created_at.getTime() > (new Date()).getTime() - 86400*1000*7) { %>
 			<div class="restaurantSpecial">
-				<p><strong>Latest special:</strong> <%= latest.text %> <em style="font-size: 80%;">posted <%= latest.created_at.getDate() %>-<%= latest.created_at.getMonth()+1 %>-<%= latest.created_at.getFullYear() %></em></p>
+				<p><strong>Latest special:</strong> <%= latest.text %> <em style="font-size: 80%;">posted <%= latest.created_at.getMonth()+1 %>/<%= latest.created_at.getDate() %>/<%= latest.created_at.getFullYear() %></em></p>
 			</div>
 	<% } %>
 	<p><%- markdown.parse(restaurant.description) %></p>
