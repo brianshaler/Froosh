@@ -4,7 +4,7 @@
 		<%= restaurant.address %> 
 		<a href="http://maps.google.com/?q=<%= restaurant.address %> (<%= restaurant.name %>)" class="nocolor" style="text-decoration: none;">(map)</a>
 		<%- restaurant.restaurant_phone ? "<br />"+restaurant.restaurant_phone : "" %>
-		<%- restaurant.web_site ? "<br />"+restaurant.web_site : "" %>
+		<%- restaurant.web_site ? "<br /><a href=\""+restaurant.web_site+"\">"+restaurant.web_site+"</a>" : "" %>
 	</p>
 	<div id="restaurantMap">
 		<iframe width="400px" height="340" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" 
