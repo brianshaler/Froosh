@@ -34,7 +34,7 @@ module.exports = {
 	      
 	      Restaurant.count({}, function (err, count) {
 	    	total = count;  
-	    	var pagerHtml = pager.render(from,to,total,'/restaurants');    	
+	    	var pagerHtml = pager.render(from,to,total,'/restaurants/manage');    	
 	                  
 			  Restaurant.find({})
 			  	.sort('name', 1)
