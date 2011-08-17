@@ -8,6 +8,7 @@ module.exports = function(app) {
 	// Plural
 	app.get("/:controller.:format?", router);				// Index
 	app.get("/:controller/:from-:to.:format?", router);		// Index
+	app.get("/:controller/:action/:from-:to.:format?", router);		// Index
 	app.get("/:controller", router);				        // Index
 	app.get("/", router);				        // Index
 	
