@@ -486,6 +486,14 @@ section.block p {
     font-size: 16px;
 }
 
+.desktop .resultSpecial {
+    margin: 0px 0px 0.5em 0px;
+    line-height: 1.2em;
+}
+.desktop .resultSpecial a {
+    color: #FFF;
+    text-decoration: none;
+}
 .desktop #results .resultDetails {
     font-size: 13px;
 }

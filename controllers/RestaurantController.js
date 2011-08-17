@@ -46,7 +46,7 @@ module.exports = {
 			      switch (req.params.format) {
 			        case 'json':	          
 			          res.send(restaurants.map(function(u) {
-			              return u.toObject();
+			              return u.toPublic();
 			          }));
 			          break;
 		
@@ -105,7 +105,9 @@ module.exports = {
                 }
                 switch (req.params.format) {
                     case 'json':
-                        return res.send(results);
+                        return res.send(results.map(function (r) {
+                            return r.toPublic();
+                        }));
                         break;
                     default:
                         return res.render(ViewTemplatePath + "/search",{results:results, zip: zip, lat: lat, lng: lng});
@@ -190,7 +192,9 @@ module.exports = {
                 }
                 switch (req.params.format) {
                     case 'json':
-                        return res.send(results);
+                        return res.send(results.map(function (r) {
+                            return r.toPublic();
+                        }));
                         break;
                     default:
                         res.render(ViewTemplatePath + "/results",{results:results});
@@ -215,7 +219,7 @@ module.exports = {
 			  
 		      switch (req.params.format) {
 		        case 'json':
-		          res.send(restaurant.toObject());
+		          res.send(restaurant.toPublic());
 		          break;
 	
 		        default:
@@ -239,7 +243,7 @@ module.exports = {
 			  
 		      switch (req.params.format) {
 		        case 'json':
-		          res.send(restaurant.toObject());
+		          res.send(restaurant.toPublic());
 		          break;
 	
 		        default:
@@ -313,7 +317,7 @@ module.exports = {
 
     	          switch (req.params.format) {
     	            case 'json':
-    	              res.send(restaurant.toObject());
+    	              res.send(restaurant.toPublic());
     	              break;
     	            default:
     	              req.flash('info', 'Restaurant updated');
@@ -363,7 +367,7 @@ module.exports = {
 	
     		    switch (req.params.format) {
     		      case 'json':
-    		        res.send(restaurant.toObject());
+    		        res.send(restaurant.toPublic());
     		        break;
 	
     		      default:
@@ -418,7 +422,7 @@ function getNearby (lat, lng, callback) {
                 }
             });
             if (found == false && (!until || results.length < until)) {
-                results.push(restaurant.toPublic());
+                results.push(restaurant);
             }
         });
     }
@@ -459,7 +463,7 @@ function getNearby (lat, lng, callback) {
     }
     
     
-    Restaurant.find({loc: {"$near": [lng, lat], "$maxDistance": 500/3959}, "specials.created_at": {"$gt": new Date((currentTime-86400*7)*1000)}, setup: true}, function (err, restaurants) {
+    Restaurant.find({"specials":{"$exists": true}}).find({loc: {"$near": [lng, lat], "$maxDistance": 500/3959}, "specials.created_at": {"$gte": new Date((new Date()).getTime()-86400*7*1000)}, setup: true}, function (err, restaurants) {
         if (err) {
             return callback(err);
         }

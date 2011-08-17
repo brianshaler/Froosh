@@ -50,9 +50,12 @@
 	<ul id="resultList">
 		<% results.forEach(function(restaurant){ %>
 		<li id="<%= restaurant.id %>" class="resultItem">
-			<% if (restaurant.specials && restaurant.specials.length > 0) { %>
+			
+			
+			<% var latest = restaurant.getLatestSpecial();
+				if (latest && latest.created_at.getTime() > (new Date()).getTime() - 86400*1000*7) { %>
 			<h3 class="resultSpecial">
-				<a href="#"><%= restaurant.specials[0].text %></a>
+				<a href="/restaurant/view/<%= restaurant.id %>"><%= latest.text %></a>
 			</h3>
 			<% } %>
 			<div class="resultDetails">

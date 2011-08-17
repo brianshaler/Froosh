@@ -42,6 +42,7 @@ Restaurant.methods.toPublic = function () {
     obj.loc = this.loc;
     obj.loc.lng = this.loc[0];
     obj.loc.lat = this.loc[1];
+    obj.specials = this.specials.toObject();
     return obj;
 }
 
