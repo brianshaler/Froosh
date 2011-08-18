@@ -271,6 +271,15 @@ module.exports = {
 	 **/  
 	update: function(req, res, next){
 	    
+	    // updatable: Fields users can POST and overwrite.
+	    // Any other fields in the schema are programmatically set.
+	    var updatable = ["name", "cell_phone", "address", "restaurant_phone", "description", "web_site", 
+	            "twitter", "facebook", "yelp"];
+	    var updatableObj = {};
+	    updatable.forEach(function (field) {
+	        updatableObj[field] = 1;
+        });
+	    
 	    Restaurant.findById(req.params.id, function(err, restaurant) {
 	        
 	    	if (!restaurant) return next(err);
@@ -297,13 +306,12 @@ module.exports = {
                 }
                 
                 for (var k in req.body.restaurant) {
-                    if (k != "loc" && k != "most_recent_special" && k != "specials") {
+                    if (k != "loc" && k != "most_recent_special" && k != "specials" && updatableObj[k] === 1) {
                         restaurant[k] = req.body.restaurant[k];
                     }
                 }
                 
-    	    	restaurant.loc[0] = lng;
-    	    	restaurant.loc[1] = lat;
+                restaurant.loc = [lng, lat];
     	    	restaurant.setup = req.body.restaurant.setup;
 
     	        restaurant.save(function(err) {
@@ -321,7 +329,7 @@ module.exports = {
     	              break;
     	            default:
     	              req.flash('info', 'Restaurant updated');
-    	              res.redirect('/restaurant/view/' + req.params.id);
+    	              res.redirect('/restaurant/edit/' + req.params.id);
     	          }
     	        });
             }
@@ -332,51 +340,50 @@ module.exports = {
 	 * Create action, creates a single item and redirects to Show or returns the object as json
 	 * Default mapping to POST '/restaurants', no GET mapping	 
 	 **/  
-	create: function(req, res, next){
-		  
-		  var restaurant = new Restaurant(req.body.restaurant);
-		  
-	            if (restaurant.address == "") {
-	                checkLatLong(null, {});
-              } else {
-                  var sg = new SimpleGeo(sg_key,sg_secret);
-              
-                  sg.getContextByAddress(restaurant.address, checkLatLong);
-              }
+	create: function(req, res, next) {
+        
+        var restaurant = new Restaurant(req.body.restaurant);
+        
+        if (restaurant.address == "") {
+            checkLatLong(null, {});
+        } else {
+            var sg = new SimpleGeo(sg_key,sg_secret);
+            
+            sg.getContextByAddress(restaurant.address, checkLatLong);
+        }
 	        
-	        function checkLatLong (err, data) {
-	            var lng = restaurant.loc[0] || 0;
-	            var lat = restaurant.loc[1] || 0;
-	            
-	            if (data && data.query && data.query.latitude && data.query.longitude) {
-	                lat = data.query.latitude;
-	                lng = data.query.longitude;
-              }
-              
-  	    	restaurant.loc[0] = lng;
-  	    	restaurant.loc[1] = lat;
-  	    	restaurant.setup = true;
+        function checkLatLong (err, data) {
+            var lng = restaurant.loc[0] || 0;
+            var lat = restaurant.loc[1] || 0;
 
-    		  restaurant.save(function(err) {
-		   
-    			if (err) {
-    	    	  req.flash('error','Could not create restaurant: ' + err);
-    	      	  res.redirect('/restaurants');
-    	      	  return;
-    			}
-	
-    		    switch (req.params.format) {
-    		      case 'json':
-    		        res.send(restaurant.toPublic());
-    		        break;
-	
-    		      default:
-    		    	  req.flash('info','Restaurant created');
-    		      	  res.redirect('/restaurant/show/' + restaurant.id);
-    			 }
-    		  });	  
+            if (data && data.query && data.query.latitude && data.query.longitude) {
+                lat = data.query.latitude;
+                lng = data.query.longitude;
+            }
 
-          }
+            restaurant.loc = [lng, lat];
+            restaurant.setup = true;
+
+            restaurant.save(function(err) {
+
+                if (err) {
+                    req.flash('error','Could not create restaurant: ' + err);
+                    res.redirect('/restaurants');
+                    return;
+                }
+
+                switch (req.params.format) {
+                    case 'json':
+                        res.send(restaurant.toPublic());
+                        break;
+
+                    default:
+                        req.flash('info','Restaurant created');
+                        res.redirect('/restaurant/show/' + restaurant.id);
+                }
+            });	  
+
+        }
 		  
 	},
 	  
