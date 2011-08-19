@@ -3,13 +3,26 @@
  *  Users Controller
  *  Created by create-controller script @ Sat Aug 13 2011 19:49:58 GMT+0000 (UTC)
  **/
- var mongoose = require('mongoose'),	
+ var sys = require('sys'),
+    mongoose = require('mongoose'),	
 	User = mongoose.model('User'),
+	//cookie = require('cookie'),
 	pager = require('../utils/pager.js'),
 	ViewTemplatePath = 'users';
 
 module.exports = {
 
+	test: function (req, res, next) {
+	    var str = "...<br />";
+	    
+        res.setHeader('Set-Cookie', "stuff=");
+	    //req.cookies.test = "testing";
+	    for (var k in req.cookies) {
+	        str += "<strong>"+k+": </strong>" + req.cookies[k] + "<br /><br />\n";
+        }
+	    res.send(str);
+    },
+	
 	/**
 	 * Index action, returns a list either via the views/users/index.html view or via json
 	 * Default mapping to GET '/users'
@@ -171,6 +184,88 @@ module.exports = {
 	   	      	}); 
 		  });
 		  
-	}
+	},
 	
+	register: function (req, res, next) {
+	    
+    },
+	
+	login: function (req, res, next) {
+	    
+	    var user_name = "";
+	    var password = "";
+	    var errors = [];
+	    
+	    console.error("Hello? "+req.body);
+	    /**/
+	    if (req.body && req.body.user_name && req.body.password && req.body.user_name != "" && req.body.password != "") {
+	        console.error("POST?");
+	        //user_name = req.body.user_name;
+	        //password = req.body.password;
+        } else
+        if (req.query && req.query["user_name"] && req.query["password"]) {
+	        console.error("GET?");
+            user_name = req.query["user_name"];
+            password = req.query["password"];
+        }
+        /**/
+	    
+	    if (user_name != "" && password != "") {
+	        /**/
+	        User.find({user_name: user_name}, function (err, users) {
+	            if (err) {
+	                errors.push("There was a system error, please try again later.");
+	                return displayLoginPage();
+	            }
+	            
+	            var me = new User;
+	            
+	            users.forEach(function (user) {
+	                if (user.authenticate(password)) {
+	                    me = user;
+                    }
+                });
+                
+                if (me.isUser()) {
+                    me.last_activity = new Date();
+                    me.save();
+                    res.setHeader('Set-Cookie', "session_key="+me.getSessionKey());
+                    res.setHeader('Set-Cookie', "session_token="+me.generateToken());
+                    
+                    return res.redirect("/user/status");
+                } else {
+                    errors.push("Invalid user name or password");
+                    return displayLoginPage();
+                }
+            });
+            return;
+            /**/
+        }
+        displayLoginPage();
+	    
+	    function displayLoginPage () {
+        	res.render(ViewTemplatePath + "/login", {user_name: user_name, errors: errors});
+        }
+    },
+    
+    status: function (req, res, next) {
+        var errors = [];
+        
+        /**/
+        for (var k in req.cookies) {
+            errors.push("<strong>"+k+": </strong>"+req.cookies[k]);
+        }
+        /**/
+        
+    	res.render(ViewTemplatePath + "/login", {user_name: "", errors: errors});
+    },
+    
+    
+	check: function (req, res, next) {
+	    
+    },
+	
+	logout: function (req, res, next) {
+	    
+    }
 };

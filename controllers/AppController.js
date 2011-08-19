@@ -1,5 +1,11 @@
 var fs = require('fs')
-	, inflection = require('../lib/inflection');
+	, inflection = require('../lib/inflection'),
+	mongoose = require('mongoose'),
+	tmp = require('../models/User.js'),
+	User = mongoose.model('User', tmp.User),
+	conf = require('node-config');
+
+var passphrase = "default";
 
 module.exports = function(app) {
 	
@@ -30,7 +36,39 @@ module.exports = function(app) {
 
 ///
 function router(req, res, next) {
-		
+	
+	postAuthentication(req, res, next, new User);
+	return;
+	
+	if (req.cookies && req.cookies.session_key && req.cookies.session_token) {
+	    if (req.cookies.session_key != "" && req.cookies.session_token != "") {
+	        return authenticate(req, res, next, postAuthentication)
+        }
+    }
+    var me = new User;
+    postAuthentication(req, res, next, me);
+}
+
+function authenticate (req, res, next, callback) {
+    var me = new User;
+    User.find({session_key: req.cookies.session_key}, function (err, users) {
+        if (err || !users) { callback(req, res, next, me); }
+        var found = false;
+        users.forEach(function (user) {
+            if (!found && user.validate(req.cookies.session_key, req.cookies.sessions_token)) {
+                me = user;
+                //me.last_activity = new Date();
+                //me.save();
+                found = true;
+            }
+        });
+        callback(req, res, next, me);
+    });
+}
+
+
+function postAuthentication (req, res, next, me) {
+    
 	var controller = req.params.controller ? req.params.controller : '';
 	var action = req.params.action ? req.params.action : '';
 	var id = req.params.id ? req.params.id : '';
@@ -40,8 +78,8 @@ function router(req, res, next) {
 	var mobile = false;
 	
 	var ua = req.headers['user-agent'];
-    
-    if (/mobile/i.test(ua) || 
+	
+	if (/mobile/i.test(ua) || 
             /like Mac OS X/.test(ua) || 
             /Android/.test(ua) || 
             /webOS\//.test(ua)) {
@@ -54,14 +92,25 @@ function router(req, res, next) {
     if (req.session && req.session.mobile) {
         mobile = req.session.mobile == "true" ? true : false;
     }
+    
     res._locals = res._locals || {};
     res._locals.mobile = mobile;
+    res._locals.me = me;
+    
+    req.params._plural = false;
+    req.params._authenticated = false;
 	
 	// Default route
 	if(controller.length == 0) {
-		index(req,res,next);
+		index(req,res,next, me);
 		return;
 	}		
+    
+	//res.setHeader('Set-Cookie', "stuff=");
+    //req.cookies.test = "testing";
+    //for (var k in req.cookies) {
+    //    str += "<strong>"+k+": </strong>" + req.cookies[k] + "<br /><br />\n";
+    //}
 	
 	// Determine the function to call based on controller / model and method
 	if(id.length == 0) {
@@ -117,6 +166,7 @@ function router(req, res, next) {
 	// Just in case it's plural...
 	if (!controllerLibrary && controller.charAt(controller.length-1) == "s") {
 		try {
+		    req.params._plural = true;
 			var controllerLibrary = require('./' + controller.capitalize().substring(0, controller.length-1) + 'Controller');			
 		} catch (e) {  }
 	}
@@ -136,7 +186,7 @@ function router(req, res, next) {
  * @param req
  * @param res
  */
-function index(req, res, next) {
+function index(req, res, next, me) {
 	/**
 	 * If you want to redirect to another controller, uncomment
 	 */

@@ -28,6 +28,9 @@ var Restaurant = new Schema({
     
 });
 
+/**
+ *  Creates a fresh object containing only allowed, public properties
+ */
 Restaurant.methods.toPublic = function () {
     var obj = {};
     obj.id = this._id;
@@ -39,13 +42,19 @@ Restaurant.methods.toPublic = function () {
     obj.twitter = this.twitter || "";
     obj.facebook = this.facebook || "";
     obj.yelp = this.yelp || "";
-    obj.loc = this.loc;
+    obj.loc = {};
+    obj.loc[0] = this.loc[0];
+    obj.loc[1] = this.loc[1];
     obj.loc.lng = this.loc[0];
     obj.loc.lat = this.loc[1];
     obj.specials = this.specials.toObject();
     return obj;
 }
 
+/**
+ *  If there are no specials, return false.
+ *  If there are any specials, return the last one (added by .push())
+ */
 Restaurant.methods.getLatestSpecial = function () {
     if (this.specials && this.specials[0]) {
         return this.specials[this.specials.length-1];
