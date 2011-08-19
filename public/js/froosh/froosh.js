@@ -25,7 +25,7 @@ function gotLocation (pos) {
 
 function getNearby (lat, lng) {
     $.ajax({
-        url: "http://froo.sh/restaurant/nearby.json",
+        url: "/restaurant/nearby.json",
         dataType: "json",
         data: {lat: lat, lng: lng},
         success: gotNearby
@@ -39,8 +39,11 @@ function gotNearby (data) {
     data.forEach(function (restaurant) {
         var li = $('<li class="resultItem" id="'+restaurant.id+'">');
         var link = $('<a href="#">');
-        var divMessage = $('<div class="resultSpecial">');
-        divMessage.html(restaurant.latest_deal);
+        if (restaurant.specials && restaurant.specials.length > 0) {
+            var divMessage = $('<div class="resultSpecial">');
+            divMessage.html(restaurant.specials[restaurant.specials.length-1].text);
+            li.append(divMessage);
+        }
         var divDetails = $('<div class="resultDetails">');
         var divRestaurant = $('<div class="resultRestaurant">');
         divRestaurant.html(restaurant.name);
@@ -53,9 +56,6 @@ function gotNearby (data) {
             divRestaurant.append(divDistance);
         }
         
-        if (restaurant.latest_deal.length > 0) {
-            li.append(divMessage);
-        }
         li.append(link);
         link.append(divDetails);
         $("#resultList").append(li);
