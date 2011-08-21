@@ -36,10 +36,6 @@ module.exports = function(app) {
 
 ///
 function router(req, res, next) {
-	
-	postAuthentication(req, res, next, new User);
-	return;
-	
 	if (req.cookies && req.cookies.session_key && req.cookies.session_token) {
 	    if (req.cookies.session_key != "" && req.cookies.session_token != "") {
 	        return authenticate(req, res, next, postAuthentication)
@@ -55,7 +51,7 @@ function authenticate (req, res, next, callback) {
         if (err || !users) { callback(req, res, next, me); }
         var found = false;
         users.forEach(function (user) {
-            if (!found && user.validate(req.cookies.session_key, req.cookies.sessions_token)) {
+            if (!found && user.validateSessionToken(req.cookies.session_key, req.cookies.session_token)) {
                 me = user;
                 //me.last_activity = new Date();
                 //me.save();
@@ -68,7 +64,6 @@ function authenticate (req, res, next, callback) {
 
 
 function postAuthentication (req, res, next, me) {
-    
 	var controller = req.params.controller ? req.params.controller : '';
 	var action = req.params.action ? req.params.action : '';
 	var id = req.params.id ? req.params.id : '';
@@ -172,7 +167,7 @@ function postAuthentication (req, res, next, me) {
 	}
 	
 	if(controllerLibrary && typeof controllerLibrary[fn] === 'function') {
-		controllerLibrary[fn](req,res,next);		
+		controllerLibrary[fn](req,res,next, me);		
 	} else {
 		res.render('404');
 	}
