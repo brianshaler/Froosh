@@ -11,9 +11,14 @@ var mongoose = require('mongoose'),
 mongoose.model("Special", tmp.Special);
 var Special = mongoose.model("Special").Special;
 
+var UNVERIFIED = "unverified";
+var VERIFIED = "verified";
+
 var Restaurant = new Schema({
 
     name: {type: String, required: true},
+    owner: {type: ObjectId},
+    status: {type: String, default: UNVERIFIED},
     cell_phone: {type:String, default: ""},
     address: {type: String, default: ""},
     restaurant_phone: {type:String, default: ""},
@@ -49,6 +54,12 @@ Restaurant.methods.toPublic = function () {
     obj.loc.lat = this.loc[1];
     obj.specials = this.specials.toObject();
     return obj;
+}
+
+Restaurant.methods.isOwnedBy = function (user) {
+    var uid = user._id.toString();
+    var oid = this.owner.toString();
+    return uid === oid ? true : false;
 }
 
 /**
