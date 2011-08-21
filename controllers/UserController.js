@@ -4,7 +4,8 @@
  *  Created by create-controller script @ Sat Aug 13 2011 19:49:58 GMT+0000 (UTC)
  **/
  var sys = require('sys'),
-    mongoose = require('mongoose'),	
+    mongoose = require('mongoose'),
+    validator = require('validator'),
 	User = mongoose.model('User'),
 	//cookie = require('cookie'),
 	pager = require('../utils/pager.js'),
@@ -12,24 +13,17 @@
 
 module.exports = {
 
-	test: function (req, res, next) {
-	    var str = "...<br />";
-	    
-        res.setHeader('Set-Cookie', "stuff=");
-	    //req.cookies.test = "testing";
-	    for (var k in req.cookies) {
-	        str += "<strong>"+k+": </strong>" + req.cookies[k] + "<br /><br />\n";
-        }
-	    res.send(str);
-    },
-	
 	/**
 	 * Index action, returns a list either via the views/users/index.html view or via json
 	 * Default mapping to GET '/users'
 	 * For JSON use '/users.json'
 	 **/
-	index: function(req, res, next) {
-		  	 
+	index: function(req, res, next, me) {
+		  
+		  if (!me.isAdmin()) {
+		      return res.render("503");
+	      }
+		  
 		  var from = req.params.from ? parseInt(req.params.from) - 1 : 0;
 		  var to = req.params.to ? parseInt(req.params.to) : 10;
 	      var total = 0;
@@ -188,6 +182,74 @@ module.exports = {
 	
 	register: function (req, res, next) {
 	    
+	    var input = {user_name: "", email: "", password: "", password2: "", zip: ""};
+	    var errors = [];
+	    var user;
+	    
+	    // fill input object with values from form
+	    if (req.body) {
+	        for (var field in req.body) {
+	            input[field] = req.body[field];
+            }
+        }
+        
+        if (input.user_name != "") {
+            if (input.email == "") {
+                errors.push("Email cannot be blank.");
+            } else
+            if (!validator.check(input.email).len(6, 64).isEmail()) {
+                errors.push("Not a valid email address.");
+            }
+            if (input.password == "") {
+                errors.push("Password cannot be blank.");
+            }
+            if (input.password != input.password2) {
+                errors.push("Passwords don't match.");
+            }
+            if (input.zip.length != 5) {
+                errors.push("Please enter a 5-digit ZIP");
+            }
+            if (errors.length > 0) {
+                displayRegisterPage();
+            } else {
+                User.find({user_name: input.user_name}, function (err, users) {
+                    if (err) {
+                        return displayRegisterPage();
+                    }
+                
+                    var existing = false;
+                    users.forEach(function (u) {
+                        existing = u;
+                    });
+                
+                    if (existing) {
+                        errors.push("User name exists, please choose another");
+                        return displayRegisterPage();
+                    } else {
+                        user = new User({user_name: input.user_name, email: input.email, zip: input.zip});
+                        user.registerUser();
+                        user.setPassword(input.password);
+                        user.save(function (err) {
+                            if (err) {
+                                errors.push(err);
+                                return displayRegisterPage();
+                            }
+                            
+                            res.setHeader('Set-Cookie', "session_key="+user.getSessionKey()+"; path=/");
+                            res.setHeader('Set-Cookie', "session_token="+user.generateToken()+"; path=/");
+                            
+                            return res.redirect("/user/status");
+                        });
+                    }
+                });
+            }
+        } else {
+            return displayRegisterPage();
+        }
+        
+	    function displayRegisterPage () {
+        	res.render(ViewTemplatePath + "/register", {user: input, errors: errors});
+        }
     },
 	
 	login: function (req, res, next) {
@@ -196,22 +258,16 @@ module.exports = {
 	    var password = "";
 	    var errors = [];
 	    
-	    console.error("Hello? "+req.body);
-	    /**/
 	    if (req.body && req.body.user_name && req.body.password && req.body.user_name != "" && req.body.password != "") {
-	        console.error("POST?");
-	        //user_name = req.body.user_name;
-	        //password = req.body.password;
+	        user_name = req.body.user_name;
+	        password = req.body.password;
         } else
         if (req.query && req.query["user_name"] && req.query["password"]) {
-	        console.error("GET?");
             user_name = req.query["user_name"];
             password = req.query["password"];
         }
-        /**/
 	    
 	    if (user_name != "" && password != "") {
-	        /**/
 	        User.find({user_name: user_name}, function (err, users) {
 	            if (err) {
 	                errors.push("There was a system error, please try again later.");
@@ -229,8 +285,8 @@ module.exports = {
                 if (me.isUser()) {
                     me.last_activity = new Date();
                     me.save();
-                    res.setHeader('Set-Cookie', "session_key="+me.getSessionKey());
-                    res.setHeader('Set-Cookie', "session_token="+me.generateToken());
+                    res.setHeader('Set-Cookie', "session_key="+me.getSessionKey()+"; path=/");
+                    res.setHeader('Set-Cookie', "session_token="+me.generateToken()+"; path=/");
                     
                     return res.redirect("/user/status");
                 } else {
@@ -239,7 +295,6 @@ module.exports = {
                 }
             });
             return;
-            /**/
         }
         displayLoginPage();
 	    
@@ -248,7 +303,7 @@ module.exports = {
         }
     },
     
-    status: function (req, res, next) {
+    status: function (req, res, next, me) {
         var errors = [];
         
         /**/
@@ -260,12 +315,14 @@ module.exports = {
     	res.render(ViewTemplatePath + "/login", {user_name: "", errors: errors});
     },
     
-    
-	check: function (req, res, next) {
-	    
-    },
-	
-	logout: function (req, res, next) {
-	    
+	logout: function (req, res, next, me) {
+	    if (me && me.isUser()) {
+	        me.session_key = "";
+	        me.save();
+        }
+        
+        res.setHeader('Set-Cookie', "session_key=null; expires="+new Date( Date.now() - 30 * 24 * 60 * 60 * 1000 ).toUTCString()+"; path=/");
+        res.setHeader('Set-Cookie', "session_token=null; expires="+new Date( Date.now() - 30 * 24 * 60 * 60 * 1000 ).toUTCString()+"; path=/");
+        res.redirect('/user/login');
     }
 };

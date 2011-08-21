@@ -8,7 +8,7 @@
 		</tr>
 		<% users.forEach(function(user){ %>
 		<tr>
-			<td><a href="/user/<%= user.id %>"><%= user.name %></a></td>
+			<td><a href="/user/show/<%= user.id %>"><%= user.user_name %></a></td>
 		</tr>
 		<% }) %>
 		<tfoot>
@@ -22,7 +22,7 @@
 	<form method="post" action="/users">
 		<input type="hidden" name="_method" value="post" />
 		<p>
-			Name: <input type="text" name="user[name]" />
+			Name: <input type="text" name="user[user_name]" />
 		</p>
 		<p>
 			<button class="button-submit" type="submit" value="Create">Create</button>

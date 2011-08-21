@@ -258,19 +258,33 @@ module.exports = {
 	 * Edit action, returns a form via views/restaurants/edit.html view no JSON view.
 	 * Default mapping to GET '/restaurant/:id/edit'
 	 **/  	  
-	edit: function(req, res, next){
-		  Restaurant.findById(req.params.id, function(err, restaurant) {
-			  if(err) return next(err);
-			  res.render(ViewTemplatePath + "/edit",{restaurant:restaurant});
-		});
+	edit: function(req, res, next, me) {
+	    
+	    if (!me.isUser()) {
+	        return res.render("503");
+        }
+        Restaurant.findById(req.params.id, function(err, restaurant) {
+            if(err) return next(err);
+
+            if (me.isModerator() || restaurant.isOwnedBy(me)) {
+                res.render(ViewTemplatePath + "/edit",{restaurant:restaurant});
+            } else {
+                return res.send(me._id+" != "+restaurant.owner);
+                res.render("503");
+            }
+        });
 	},
 	  
 	/**
 	 * Update action, updates a single item and redirects to Show or returns the object as json
 	 * Default mapping to PUT '/restaurant/:id', no GET mapping	 
 	 **/  
-	update: function(req, res, next){
+	update: function(req, res, next, me){
 	    
+	    if (!me.isUser()) {
+	        return res.render("503");
+        }
+        
 	    // updatable: Fields users can POST and overwrite.
 	    // Any other fields in the schema are programmatically set.
 	    var updatable = ["name", "cell_phone", "address", "restaurant_phone", "description", "web_site", 
@@ -282,7 +296,11 @@ module.exports = {
 	    
 	    Restaurant.findById(req.params.id, function(err, restaurant) {
 	        
-	    	if (!restaurant) return next(err);
+	    	if (err || !restaurant) return next(err);
+	        
+	        if (!me.isModerator() && restaurant.isOwnedBy(me)) {
+                return res.render("503");
+            }
 	        
 	        if (restaurant.address != req.body.restaurant.address) {
 	            if (req.body.restaurant.address == "") {

@@ -23,7 +23,7 @@
 			
 		</script>
   </head>
-  <body id="index" class="desktop"><% if (me && me.isUser()) { %>Hello, <%= me.user_name %><% } %>
+  <body id="index" class="desktop"><% if (me.isUser()) { %>Hello, <%= me.user_name %><% } %>
   	<div id="container">
 			<% if (!conf || conf.dev !== true) { %>
 			<div id="header">
@@ -35,7 +35,7 @@
     		<%- body %>
     	</div>		
 			<footer>
-				&copy; 2011 <a href="/">froo.sh</a> | <a href="http://nyc.startupweekend.org/">nyc startup weekend</a> | <a href="#">about</a> | <a href="/?mobile=true">mobile site</a>
+				&copy; 2011 <a href="/">froo.sh</a> | <a href="http://nyc.startupweekend.org/2011/08/14/august-2011-startup-weekend-teams/">nyc startup weekend</a> | <a href="#">about</a> | <a href="/?mobile=true">mobile site</a>
 			</footer>
     </div>
   </body>
