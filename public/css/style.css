@@ -400,7 +400,7 @@ section.block p {
     width: 450px;
 }
 
-.desktop section .title, article .entry-title {
+.desktop section .title, article .entry-title, .widget-title {
     color: #a5dbbe;
     font-size: 22px;
     font-family: 'Coustard', helvetica, arial, sans-serif;
