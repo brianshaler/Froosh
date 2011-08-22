@@ -400,7 +400,7 @@ section.block p {
     width: 450px;
 }
 
-.desktop section .title {
+.desktop section .title, article .entry-title {
     color: #a5dbbe;
     font-size: 22px;
     font-family: 'Coustard', helvetica, arial, sans-serif;
@@ -662,3 +662,9 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
   from {opacity: 1;}
   to {opacity: 0.25;}
 }
+
+
+
+
+/*--- BLOG ---*/
+
