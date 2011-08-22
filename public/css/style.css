@@ -407,7 +407,7 @@ section.block p {
     letter-spacing: +1px;
     padding-bottom: 4px;
     border-bottom: dotted 1px #a5dbbe;
-    margin-bottom: 12px;
+    margin: 0px 0px 12px 0px;
 }
 
 .desktop #editRestaurant dd {
