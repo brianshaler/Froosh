@@ -31,6 +31,16 @@
 				<div class="subhead">food <span class="dark">:</span> sweet <span class="dark">:</span> food</div>
 				<% } %>
 			</div>
+			<% if (me.isUser()) { %>
+				<div style="text-align: right;">
+					Hello, <%= me.user_name %>! <a href="/user/logout">logout</a>
+				</div>
+			<% } else { %>
+				<div style="text-align: right;">
+					<a href="/user/login">login</a> | 
+					<a href="/user/register">register</a>
+				</div>
+			<% } %>
 			<div id="content">
     		<%- body %>
     	</div>		

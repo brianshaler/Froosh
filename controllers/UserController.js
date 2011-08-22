@@ -61,11 +61,21 @@ module.exports = {
 	 * Default mapping to GET '/user/:id'
 	 * For JSON use '/user/:id.json'
 	 **/	
-	show: function(req, res, next) {	  		  
-			
-		  User.findById(req.params.id, function(err, user) {
+	show: function(req, res, next, me) {	  		  
+		
+		if (!me.isAdmin() && me.user_name != req.params.id) {
+            return res.render("503");
+	    }
+	    
+	    User.find({user_name: req.params.id}, function(err, users) {
 			  
 			  if(err) return next(err);
+			  
+			  var user = null;
+			  users.forEach(function (u) {
+			      user = u;
+		      });
+		      if (!user) return next("Hmm..");
 			  
 		      switch (req.params.format) {
 		        case 'json':
@@ -191,14 +201,23 @@ module.exports = {
 	        for (var field in req.body) {
 	            input[field] = req.body[field];
             }
+            if (req.body.user) {
+    	        for (var field in req.body.user) {
+    	            input[field] = req.body.user[field];
+                }
+            }
         }
         
         if (input.user_name != "") {
             if (input.email == "") {
                 errors.push("Email cannot be blank.");
-            } else
-            if (!validator.check(input.email).len(6, 64).isEmail()) {
-                errors.push("Not a valid email address.");
+            } else {
+                var validEmail = false;
+                try {
+                    validEmail = validator.check(input.email).len(6, 64).isEmail();
+                } catch (e) {
+                    errors.push("Email: "+e.message);
+                }
             }
             if (input.password == "") {
                 errors.push("Password cannot be blank.");
@@ -210,10 +229,11 @@ module.exports = {
                 errors.push("Please enter a 5-digit ZIP");
             }
             if (errors.length > 0) {
-                displayRegisterPage();
+                return displayRegisterPage();
             } else {
                 User.find({user_name: input.user_name}, function (err, users) {
                     if (err) {
+                        errors.push(err);
                         return displayRegisterPage();
                     }
                 
@@ -238,7 +258,8 @@ module.exports = {
                             res.setHeader('Set-Cookie', "session_key="+user.getSessionKey()+"; path=/");
                             res.setHeader('Set-Cookie', "session_token="+user.generateToken()+"; path=/");
                             
-                            return res.redirect("/user/status");
+                            // Registered, redirect to home page
+                            return res.redirect("/user/show/"+user.user_name);
                         });
                     }
                 });
@@ -288,7 +309,8 @@ module.exports = {
                     res.setHeader('Set-Cookie', "session_key="+me.getSessionKey()+"; path=/");
                     res.setHeader('Set-Cookie', "session_token="+me.generateToken()+"; path=/");
                     
-                    return res.redirect("/user/status");
+                    // Logged in, redirect to home page
+                    return res.redirect("/user/show/"+me.user_name);
                 } else {
                     errors.push("Invalid user name or password");
                     return displayLoginPage();
@@ -323,6 +345,15 @@ module.exports = {
         
         res.setHeader('Set-Cookie', "session_key=null; expires="+new Date( Date.now() - 30 * 24 * 60 * 60 * 1000 ).toUTCString()+"; path=/");
         res.setHeader('Set-Cookie', "session_token=null; expires="+new Date( Date.now() - 30 * 24 * 60 * 60 * 1000 ).toUTCString()+"; path=/");
-        res.redirect('/user/login');
+        
+        res.redirect('/');
+    },
+    
+    hash: function (req, res, next, me) {
+        var h = "No input..";
+        if (req.params.id) {
+            h = me.hash(req.params.id);
+        }
+        res.send(h);
     }
 };

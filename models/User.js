@@ -6,7 +6,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    conf = require('node-config');
+    conf = require('node-config')
+    crypto = require('crypto');
 
 var SUPERADMIN = "superadmin";
 var ADMIN = "admin";
@@ -74,7 +75,8 @@ User.methods.getSessionKey = function () {
 
 User.methods.generateSessionKey = function () {
     var key = "";
-    key = "/KEY-"+this.user_name+Date.now()+"-KEY/";
+    key = this.hash(this.user_name+this.password+Date.now());
+    //key = "/KEY-"+this.user_name+Date.now()+"-KEY/";
     return key;
 }
 
@@ -88,12 +90,14 @@ User.methods.validateSessionToken = function (key, token) {
         }
     }
     console.error("Validation: "+this.user_name+": "+(validated ? "true" : "false"));
+    
     return validated;
 }
 
 User.methods.generateToken = function () {
     var token = "";
-    token = "/TOKEN-"+this.user_name+"-"+this.session_key+"-TOKEN/";
+    token = this.hash(this.user_name+"|"+this.session_key);
+    //token = "/TOKEN-"+this.user_name+"-"+this.session_key+"-TOKEN/";
     return token;
 }
 
@@ -121,8 +125,11 @@ User.methods.isUser = function () {
 
 User.methods.hash = function (str) {
     var hashed;
+    var h = crypto.createHash('sha1');
+    h.update(str);
+    hashed = h.digest('hex');
     //hashed = str + conf.passphrase;
-    hashed = "HASH" + str;
+    //hashed = "HASH" + str;
     return hashed;
 }
 
