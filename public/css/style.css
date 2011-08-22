@@ -677,13 +677,13 @@ div.spinner div.bar12 {-webkit-transform:rotate(330deg) translate(0, -142%); -we
 /*--- BLOG ---*/
 
 #primary {
-    width: 450px;
+    width: 600px;
     float: left;
     margin: 0px 40px 40px 0px;
 }
 
 #secondary {
-    width: 450px;
+    width: 300px;
     float: right;
 }
 
