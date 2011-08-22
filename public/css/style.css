@@ -409,6 +409,10 @@ section.block p {
     border-bottom: dotted 1px #a5dbbe;
     margin: 0px 0px 12px 0px;
 }
+article .entry-title a {
+    color: #a5dbbe;
+    text-decoration: none;
+}
 
 .desktop #editRestaurant dd {
     margin: 0px 0px 0.5em 160px;
