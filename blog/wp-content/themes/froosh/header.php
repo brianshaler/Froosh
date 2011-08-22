@@ -28,6 +28,9 @@
 		<script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>
 		<script type="text/javascript" src="/js/jquery-ui-1.8.10.custom.min.js"></script>
 		<script type="text/javascript" src="/js/froosh/froosh.js"></script>
+	<?
+	wp_head();
+	?>
   </head>
   <body id="index" class="desktop">
   	<div id="container">
