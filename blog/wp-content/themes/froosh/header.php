@@ -35,4 +35,4 @@
 				<a href="/" class="image"><img src="/images/logo.png" /></a>
 				<div class="subhead">food <span class="dark">:</span> sweet <span class="dark">:</span> food</div>
 			</div>
-			<div id="content">
+			<div id="content" class="wp-column-left">
